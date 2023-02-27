@@ -1,0 +1,21 @@
+image: doctoolchain/doctoolchain:v2.2.1
+
+generateHtml:
+  stage: build
+  script:
+    - cp docToolchainConfig.groovy Config.groovy
+    - doctoolchain . generateHTML
+  artifacts:
+    paths:
+      - build/
+
+pages:
+  stage: deploy
+  script:
+  -  mv build/html5/ public/
+  artifacts:
+    paths:
+    - public
+    expire_in: 1 day
+  rules:
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid #000000;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+    <h2>Codes for Code List DigitalPaymentTransactionResult</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>01</td><td>The transaction was successful.</td></tr>
+		<tr><td>02</td><td>The transaction was not successful.</td></tr>
+		<tr><td>03</td><td>The transaction is pending.</td></tr>
+		<tr><td>04</td><td>A timeout occurred.</td></tr>
+		<tr><td>05</td><td>The transaction was canceled.</td></tr>
+	</table>
+		
+	<h2>Codes for Code List ProcessingStatus</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>100</td><td>The processing was completed successfully.</td></tr>
+		<tr><td>101</td><td>The processing was not required as authorization is already successfully cancelled.</td></tr>
+		<tr><td>110</td><td>The processing still is ongoing.</td></tr>
+		<tr><td>201</td><td>The credit card/account limit was exceeded.</td></tr>
+		<tr><td>202</td><td>A temporary processing error has occurred.</td></tr>
+		<tr><td>203</td><td>The payment was refunded.</td></tr>
+		<tr><td>204</td><td>The processing was canceled.</td></tr>
+		<tr><td>210</td><td>Invalid credit card/account data was provided.</td></tr>
+		<tr><td>211</td><td>The credit card has expired.</td></tr>
+		<tr><td>212</td><td>The credit card/account was declined.</td></tr>
+		<tr><td>213</td><td>The processing was aborted due to fraudulent behavior.</td></tr>
+		<tr><td>220</td><td>The validation of the card data/account provided failed.</td></tr>
+		<tr><td>221</td><td>No authorization was provided for the payment processing.</td></tr>
+		<tr><td>222</td><td>The transaction was declined.</td></tr>
+		<tr><td>299</td><td>A general payment processing error occurred.</td></tr>
+		<tr><td>301</td><td>An error while cancelling the authorization occurred.</td></tr>
+		<tr><td>302</td><td>Transaction not allowed as authorization is already charged.</td></tr>
+		<tr><td>311</td><td>Approval of the authorization failed.</td></tr>
+		<tr><td>312</td><td>Approval of the authorization was canceled.</td></tr>
+		<tr><td>313</td><td>Authorization declined due to duplication.</td></tr>
+		<tr><td>400</td><td>The authorization has expired.</td></tr>
+		<tr><td>401</td><td>The authorization has been cancelled.</td></tr>
+		<tr><td>500</td><td>The amount of the refund exceeds the original amount.</td></tr>
+		<tr><td>501</td><td>The refund was requested after the refund period.</td></tr>
+		<tr><td>600</td><td>The amount of the reauthorization exceeds the original authorization amount.</td></tr>
+		<tr><td>601</td><td>The reauthorization was requested after the permitted period.</td></tr>
+		<tr><td>602</td><td>The reauthorization was requested too many times.</td></tr>
+	</table>
+		
+	<h2>DigitalPaymentFinancialTransactionType</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>100</td><td>Charge</td></tr>
+		<tr><td>200</td><td>Refund</td></tr>
+		<tr><td>300</td><td>Fee</td></tr>
+		<tr><td>400</td><td>Currency Conversion</td></tr>
+		<tr><td>500</td><td>Withdrawal</td></tr>
+		<tr><td>510</td><td>Deposit</td></tr>
+		<tr><td>600</td><td>Account to Account</td></tr>
+		<tr><td>700</td><td>Adjustment Posting</td></tr>
+		<tr><td>900</td><td>Other</td></tr>
+	</table>
+	
+	<h2>Codes for Code List PaymentMethod</h2>
+	<table>
+        <tr>
+            <th>Code Value</th>
+            <th>Description</th>
+        </tr>
+		<tr><td>CC</td><td>Credit Card</td></tr>
+		<tr><td>EP</td><td>External Payment</td></tr>
+	</table>
+	
+	<h2>Codes for Code List PaymentCardType</h2>
+	<table>
+        <tr>
+            <th>Code Value</th>
+            <th>Description</th>
+        </tr>
+		<tr><td>DPAM</td><td>American Express</td></tr>
+		<tr><td>DPVI</td><td>Visa</td></tr>
+		<tr><td>DPMC</td><td>Master Card</td></tr>
+		<tr><td>DPDI</td><td>Diners Club</td></tr>
+		<tr><td>DPDS</td><td>Discover Card</td></tr>
+		<tr><td>DPJC</td><td>JCB</td></tr>
+		<tr><td>PLDC</td><td>PINLess Debit Card</td></tr>
+		<tr><td>ACHE</td><td>ACH/Electronic Check</td></tr>
+	</table>
+	
+	<h2>Codes for Code List PaymentType</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>PP</td><td>PayPal</td></tr>
+		<tr><td>KL</td><td>Klarna</td></tr>
+		<tr><td>AP</td><td>Alipay</td></tr>
+		<tr><td>SO</td><td>Sofort</td></tr>
+		<tr><td>ID</td><td>Ideal</td></tr>
+		<tr><td>PC</td><td>Payment Card</td></tr>
+		<tr><td>G1</td><td>GiroPay</td></tr>
+		<tr><td>GP</td><td>GooglePay</td></tr>
+		<tr><td>A1</td><td>ApplePay</td></tr>
+		<tr><td>AC</td><td>ACH/Electronic Check</td></tr>
+		<tr><td>MP</td><td>MicrosoftPay</td></tr>
+		<tr><td>WP</td><td>WeChatPay</td></tr>
+		<tr><td>A2</td><td>AfterPay</td></tr>
+		<tr><td>PR</td><td>Przelewy24</td></tr>
+		<tr><td>ES</td><td>E-Payment Standard</td></tr>
+		<tr><td>P1</td><td>PostFinance Card</td></tr>
+		<tr><td>P2</td><td>PostFinance E-Finance</td></tr>
+		<tr><td>BA</td><td>Bancontact</td></tr>
+		<tr><td>VI</td><td>Barzahlen/viacash</td></tr>
+		<tr><td>MO</td><td>MobilePay</td></tr>
+		<tr><td>WC</td><td>Wallet Card</td></tr>
+	</table>
+	
+	<h2>Codes for Code List DigitalPaymentAuthorizationType</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>DP2P</td><td>PayPal with authorization</td></tr>
+		<tr><td>KLA2</td><td>Klarna with authorization</td></tr>
+		<tr><td>ALI2</td><td>AliPay with authorization</td></tr>
+		<tr><td>AFP2</td><td>AfterPay with authorization</td></tr>
+		<tr><td>GOP2</td><td>GooglePay with authorization</td></tr>
+		<tr><td>MOP2</td><td>MobilePay with authorization</td></tr>
+		<tr><td>APP2</td><td>ApplePay with authorization</td></tr>
+		<tr><td>DPC2</td><td>Payment card with authorization</td></tr>
+	</table>
+
+	<h2>Codes for Code List DigitalPaymentDirectCaptureType</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>ACH1</td><td>ACH Transfer/eCheck</td></tr>
+		<tr><td>ALI1</td><td>AliPay Direct Capture</td></tr>
+		<tr><td>DP1P</td><td>PayPal Direct Capture</td></tr>
+		<tr><td>DPC1</td><td>Payment Card Direct Capture</td></tr>
+		<tr><td>IDE1</td><td>iDeal Payment</td></tr>
+		<tr><td>KLA1</td><td>Klarna Direct Capture</td></tr>
+		<tr><td>SOF1</td><td>Sofort Payment</td></tr>
+		<tr><td>AFP1</td><td>AfterPay Direct Capture</td></tr>
+		<tr><td>GIR1</td><td>GiroPay</td></tr>
+		<tr><td>PRZ1</td><td>Przelewy24</td></tr>
+		<tr><td>EPS1</td><td>E-Payment Standard</td></tr>
+		<tr><td>PFC1</td><td>PostFinance Card</td></tr>
+		<tr><td>PFE1</td><td>PostFinance E-Finance</td></tr>
+		<tr><td>BAC1</td><td>Bancontact</td></tr>
+		<tr><td>VIC1</td><td>Barzahlen/viacash</td></tr>
+		<tr><td>GOP1</td><td>GooglePay Direct Capture</td></tr>
+		<tr><td>APP1</td><td>ApplePay Direct Capture</td></tr>
+		<tr><td>WEC1</td><td>WeChat Pay</td></tr>
+		<tr><td>MIC1</td><td>Microsoft Pay</td></tr>
+	</table>
+	
+	<h2>Codes for Code List PaymentServiceProvider</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>CYBS</td><td>Cybersource</td></tr>
+		<tr><td>PFEP</td><td>PayFabric from EVO Payments</td></tr>
+		<tr><td>NOVA</td><td>Novalnet AG</td></tr>
+		<tr><td>MONE</td><td>Moneris</td></tr>
+		<tr><td>DPPP</td><td>Paypal</td></tr>
+		<tr><td>DPST</td><td>Stripe</td></tr>
+		<tr><td>SPAY</td><td>SnapPay</td></tr>
+		<tr><td>WB2B</td><td>Worldpay B2B, Paymetric</td></tr>
+		<tr><td>CEZY</td><td>CardEasy</td></tr>
+	</table>
+	
+	<h2>Codes for Code List DigitalPaymentCommerceType</h2>
+	<table>
+        <tr>
+            <th>Code Value</th>
+            <th>Description</th>
+        </tr>
+		<tr><td>ECOMMERCE</td><td>E-Commerce</td></tr>
+		<tr><td>MOTO</td><td>Mobile Order / Telephone Order</td></tr>
+	</table>
+	
+	<h2>Codes for Code List DigitalPaymentSessionType</h2>
+	<table>
+        <tr>
+            <th>Code Value</th>
+            <th>Description</th>
+        </tr>
+		<tr><td>ONLINE</td><td>Online</td></tr>
+		<tr><td>OFFLINE</td><td>Offline</td></tr>
+	</table>
+	
+	<h2>Codes for Code List DigitalPaymentAuthorizationInitiator</h2>
+	<table>
+        <tr>
+            <th>Code Value</th>
+            <th>Description</th>
+        </tr>
+		<tr><td>CARDHOLDER</td><td>Transaction initiated by card holder, or by the merchant but with explicit consent by the cardholder</td></tr>
+		<tr><td>MERCHANT</td><td>Transaction initiated by merchant</td></tr>
+	</table>
+	
+	<h2>Codes for Code List DigitalPaymentAuthorizationScenarioType</h2>
+	<table>
+		<tr>
+			<th>Code Value</th>
+			<th>Description</th>
+		</tr>
+		<tr><td>UNASSOCIATED</td><td>Indicates a transaction that is not related to any other transaction, e.g. buying goods in an online shop, debiting account after falling below agreed threshold</td></tr>
+		<tr><td>RECURRING_INITIAL</td><td>First transaction of a series of payments that may or may not comply to the definition of the 'Regulatory Technical Standards on strong customer authentication and secure communication under PSD2' (Commission Delegated Regulation (EU) 2018/389) Article 14 by the European Bank Authority</td></tr>
+		<tr><td>RECURRING_SUBSEQUENT</td><td>Subsequent transaction of a series of payments that may or may not comply to the definition of the 'Regulatory Technical Standards on strong customer authentication and secure communication under PSD2' (Commission Delegated Regulation (EU) 2018/389) Article 14 by the European Bank Authority</td></tr>
+		<tr><td>RECURRING_EBA_INITIAL</td><td>First transaction of a series of payments that complies to the definition of 'Regulatory Technical Standards on strong customer authentication and secure communication under PSD2' (Commission Delegated Regulation (EU) 2018/389) Article 14 by the European Bank Authority</td></tr>
+		<tr><td>RECURRING_EBA_SUBSEQUENT</td><td>Subsequent transaction of a series of payments that complies to the definition of 'Regulatory Technical Standards on strong customer authentication and secure communication under PSD2' (Commission Delegated Regulation (EU) 2018/389) Article 14 by the European Bank Authority</td></tr>
+	</table>
+	
+	<h2>Codes for Code List DigitalPaymentFraudRisk</h2>
+	<table>
+        <tr>
+            <th>Code Value</th>
+            <th>Description</th>
+        </tr>
+		<tr><td>NONE</td><td>Transaction was labeled 'no fraud risk' during fraud check.</td></tr>
+		<tr><td>ELEVATED</td><td>Transaction was labeled 'elevated fraud risk' during fraud check.</td></tr>
+		<tr><td>SEVERE</td><td>Transaction was labeled 'severe fraud risk' during fraud check.</td></tr>
+		<tr><td>NOT_DETERMINED</td><td>Fraud risk for transaction was not determined.</td></tr>
+		<tr><td>ERRONEOUS</td><td>An error occurred during Fraud risk determination.</td></tr>
+		<tr><td>CHECK_INACTIVE</td><td>Fraud risk check for transaction is inactive.</td></tr>
+		<tr><td>ACCEPTED</td><td>Fraud risk was accepted after review.</td></tr>
+		<tr><td>REJECTED</td><td>Transaction was rejected after review.</td></tr>
+	</table>
+    
+</body>
+</html>

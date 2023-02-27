@@ -1,0 +1,88 @@
+= Node Backend
+
+== Role
+Do Requests that can only be done by a backend. Substitute for Spryker.
+
+== OAuth
+Url: POST https://<namespace>-digitalpayments-test.authentication.eu10.hana.ondemand.com/oauth/token?grant_type=client_credentials
+
+Send client_id and client_secret as basic auth header.
+
+== Run
+
+Requires node > 14(?)
+[,bash]
+```sh
+nvm use v16.13.1
+```
+
+Start:
+```sh
+node index.js
+```
+
+Node will run at the port configured in index.js, default ist 6060.
+
+== Endpoints
+
+* Call /getlib to authorize and return lib path
+* Call /init to initialize payment
+* Call /finalizepayment to finalize payment
+
+== SSL & CORS
+
+For POC I did use http instead of https locally. Https is expected from the documentation. Also Cors needs to be configured at the backend.
+
+=== Loading DPJSLIB
+
+The request to get dpjslib url can and should only be done by the backend. When done in frontend there will be an CORS error that cannot be fixed from our side.
+
+== Example Log Output for a Transaction
+
+[,json]
+----
+ | INFORMATION     2023-03-24 12:24:06   Authorization successful, Bearer Token retrieved.
+ | INFORMATION     2023-03-24 12:24:07   getDPJSLIB Result: {
+  LoaderUrl: 'https://digitalpayments-demo-core.cfapps.eu10.hana.ondemand.com/dpjslib/latest/loader.min.js',
+  APISessionId: 'AaHA...'
+}
+ | INFORMATION     2023-03-24 12:24:08   Payment Initiate Result: {
+  DigitalPaymentTransaction: '1871...'
+}
+ | INFORMATION     2023-03-24 12:24:20   Finalizing Payment with: {
+  DigitalPaymentTransaction: '1871...',
+  TransactionByPaytSrvcPrvdr: 'pi_3Mp...'
+}
+ | INFORMATION     2023-03-24 12:24:22   Payment Finalize Successful: {
+  DgtlPaytPaymentPageTransType: 'AUTHORIZATION',
+  Authorization: {
+    AuthorizationByPaytSrvcPrvdr: 'pi_3Mp...',
+    AuthorizationByDigitalPaytSrvc: 'N6T...',
+    AuthorizedAmountInAuthznCrcy: '140.75',
+    AuthorizationCurrency: 'USD',
+    AuthorizationDateTime: '2023-03-24T11:24:10Z',
+    DetailedAuthorizationStatus: '100',
+    DigitalPaymentFraudRisk: 'NONE',
+    StatusDescription: 'Successful',
+    MerchantAccount: 'pk_test_51M...',
+    PaymentServiceProvider: 'DPST'
+  },
+  Source: {
+    Card: {
+      PaymentCardType: 'DPVI',
+      PaymentCardExpirationMonth: '11',
+      PaymentCardExpirationYear: '2024',
+      PaymentCardMaskedNumber: '************1111',
+      PaymentCardHolderName: '41',
+      PaytCardByDigitalPaymentSrvc: 'GIQ...'
+    },
+    Merchant: {
+      PaymentServiceProvider: 'DPST',
+      Account: 'pk_test_51M...'
+    }
+  },
+  PaymentType: 'PC',
+  PaytCardRegnLifeCycleType: '02',
+  ElectronicPaymentType: 'DPVI'
+}
+----

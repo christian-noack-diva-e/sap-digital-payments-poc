@@ -1,0 +1,3115 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SAP digital payments add-on",
+    "version": "v2"
+  },
+  "servers": [],
+  "paths": {
+    "/reauthorizations": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Reauthorizations": [
+                    {
+                      "_comment": "Sample 1: Successful response of a reauthorization",
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+                        "DigitalPaymentDateTime": "2020-01-23T15:54:23Z",
+                        "DigitalPaytTransResult": "01",
+                        "DigitalPaytTransRsltDesc": "Successful",
+                        "RequestByPaytSrvcPrvdr": "1234567",
+                        "ReferenceDocument": "0001346385657226"
+                      },
+                      "PreviousAuthznByDgtlPaytSrvc": "WKN4Q09TR1",
+                      "Authorization": {
+                        "AuthorizationByPaytSrvcPrvdr": "auth_34874383",
+                        "AuthorizationByDigitalPaytSrvc": "DPOIZEAPIR",
+                        "AuthorizationByAcquirer": "3485246834536",
+                        "PaymentCardAuthznRelationID": "GHI98666QK36483623200975",
+                        "AuthorizedAmountInAuthznCrcy": "150.25",
+                        "AuthorizationCurrency": "EUR",
+                        "AuthorizationDateTime": "2020-01-23T15:54:25Z",
+                        "AuthorizationExpirationDateTme": "2017-01-30T15:54:25Z",
+                        "DetailedAuthorizationStatus": "100"
+                      },
+                      "DgtlPaytAuthznRelationID": "GHI98666QK36483623200975"
+                    },
+                    {
+                      "_comment": "Sample 2: Unsuccessful response of a reauthorization",
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "15d73bda6fb690bb405cd8a4410acd55de92d266a32",
+                        "DigitalPaymentDateTime": "2020-01-23T15:54:23Z",
+                        "DigitalPaytTransResult": "02",
+                        "DigitalPaytTransRsltDesc": "Message from PSP: Internal server error",
+                        "RequestByPaytSrvcPrvdr": "REQUEST_BY_PSP",
+                        "ReferenceDocument": "0001346385657226",
+                        "Error": {
+                          "Id": "CORE_REAUTHORIZATION_RESPONSE_AUTHORIZATION_INVALID",
+                          "Message": "Internal server error occurred",
+                          "DetailedMessage": "Invalid authorization provided in reauthorization request.",
+                          "SourceArtifact": "core",
+                          "ErrorTimestamp": "2020-01-23T15:54:25Z",
+                          "CorrelationId": "3755680098"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/reauthorizationResponses"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Reauthorizes an existing authorization.",
+        "operationId": "POST_reauthorizations",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "Reauthorizations": [
+                  {
+                    "AuthorizationByDigitalPaytSrvc": "WKN4Q09TR1",
+                    "AmountInAuthorizationCurrency": "150.25",
+                    "ReauthorizationReasonCode": "LATE_DELIVERY",
+                    "PaymentCardAuthznRelationID": "ASD64536WE36483623235864"
+                  },
+                  {
+                    "AuthorizationByDigitalPaytSrvc": "WKN4Q09TR2",
+                    "AmountInAuthorizationCurrency": "150.35",
+                    "ReauthorizationReasonCode": "EXPIRED_AUTHORIZATION",
+                    "PaymentCardAuthznRelationID": "ASD64536WE36483623235865"
+                  },
+                  {
+                    "AuthorizationByDigitalPaytSrvc": "WKN4Q09TR3",
+                    "AmountInAuthorizationCurrency": "150.45",
+                    "DgtlPaytAuthznRelationID": "ASD64536WE36483623235865"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/reauthorizationRequests"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/authorization/getbydigitalpayttransaction": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "AuthorizationByPaytSrvcPrvdr": "auth_4711",
+                  "AuthorizationByAcquirer": "acqu_4711",
+                  "AuthorizationByDigitalPaytSrvc": "ILZSGWLACY",
+                  "AuthorizedAmountInAuthznCrcy": "123.45",
+                  "AuthorizationCurrency": "USD",
+                  "AuthorizationDateTime": "2016-11-02T15:55:48Z",
+                  "AuthorizationExpirationDateTme": "2016-11-09T15:55:48Z",
+                  "DetailedAuthorizationStatus": "100",
+                  "StatusDescription": "Successful",
+                  "MerchantAlias": "ECOM_USD",
+                  "DgtlPaytAuthznRelationID": "authrelid"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/getAuthorizationByDPTrnxResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          }
+        },
+        "description": "Gets authorization by SAP digital payments add-on digital payment transaction identifier",
+        "operationId": "POST_authorization-getbydigitalpayttransaction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "DigitalPaymentTransaction": "1564ashfkdsfjILZSGWLACYshfksopjfpsd464566"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/getAuthorizationByDPTrnxRequest"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/advice": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "AdviceResponseHeader": {
+                    "FromDate": "2017-01-23",
+                    "ToDate": "2017-01-24",
+                    "PaymentMethod": "CC"
+                  },
+                  "AdviceResponseItems": [
+                    {
+                      "AdviceResponseItem": {
+                        "DigitalPaymentTransaction": {
+                          "TransactionId": "16686365521a238bd1d0009490cab4031751666f126",
+                          "DigitalPaymentDateTime": "2017-01-23T15:54:23Z",
+                          "DigitalPaytTransResult": "01",
+                          "DigitalPaytTransRsltDesc": "Successful",
+                          "ReferenceDocument": "ADV_REF_1"
+                        },
+                        "Merchant": {
+                          "PaymentServiceProvider": "Stripe",
+                          "Account": "paypal@akron.com"
+                        },
+                        "AdviceTransactions": [
+                          {
+                            "AdviceTransaction": {
+                              "PaymentByDigitalPaymentService": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+                              "TransactionByPaytSrvcPrvdr": "ch_36453645364836",
+                              "ReferenceDocument": "4865448632",
+                              "AmountInTransactionCurrency": "123.45",
+                              "FeeAmountInTransactionCrcy": "1.23",
+                              "TransactionCurrency": "EUR",
+                              "TransactionFeePercentage": "1.00",
+                              "AmountInOriginalCurrency": "234.56",
+                              "OriginalCurrency": "USD",
+                              "TaxAmount": "12.34",
+                              "FinancialTransactionType": "100",
+                              "PaymentType": "PP",
+                              "DocumentDate": "2017-02-15",
+                              "ValueDate": "2017-03-01"
+                            }
+                          },
+                          {
+                            "AdviceTransaction": {
+                              "PaymentByDigitalPaymentService": "1662e5bae8af61817df55ee489697120362422f4519",
+                              "TransactionByPaytSrvcPrvdr": "98429746121",
+                              "ReferenceDocument": "REF_DOC_98372",
+                              "AmountInTransactionCurrency": "987.45",
+                              "FeeAmountInTransactionCrcy": "9.23",
+                              "TransactionCurrency": "EUR",
+                              "TransactionFeePercentage": "0.00",
+                              "AmountInOriginalCurrency": "1234.56",
+                              "OriginalCurrency": "USD",
+                              "TaxAmount": "122.34",
+                              "FinancialTransactionType": "Charge",
+                              "PaymentType": "PC",
+                              "DocumentDate": "2017-02-15",
+                              "ValueDate": "2017-03-01"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "AdviceResponseItem": {
+                        "DigitalPaymentTransaction": {
+                          "TransactionId": "167f3cca3d553c1c10b643948be8ad9f8b3b7c1e4d8",
+                          "DigitalPaymentDateTime": "2017-01-23T15:54:23Z",
+                          "DigitalPaytTransResult": "01",
+                          "DigitalPaytTransRsltDesc": "Successful",
+                          "ReferenceDocument": "4865448632"
+                        },
+                        "Merchant": {
+                          "PaymentServiceProvider": "Stripe",
+                          "Account": "ac876578gg9967578"
+                        },
+                        "AdviceTransactions": [
+                          {
+                            "AdviceTransaction": {
+                              "PaymentByDigitalPaymentService": "17a57ab1e1796793e507a7f47eaa1cbfa384552a482",
+                              "TransactionByPaytSrvcPrvdr": "8324738439842",
+                              "ReferenceDocument": "253562",
+                              "AmountInTransactionCurrency": "123.45",
+                              "FeeAmountInTransactionCrcy": "1.23",
+                              "TransactionCurrency": "EUR",
+                              "TransactionFeePercentage": "1.00",
+                              "AmountInOriginalCurrency": "234.56",
+                              "OriginalCurrency": "USD",
+                              "TaxAmount": "12.34",
+                              "FinancialTransactionType": "Charge",
+                              "PaymentType": "PP",
+                              "DocumentDate": "2017-02-15",
+                              "ValueDate": "2017-03-01"
+                            }
+                          },
+                          {
+                            "AdviceTransaction": {
+                              "PaymentByDigitalPaymentService": "17a563c94312b513a8776c74041be82c37a6f3d4e4a",
+                              "TransactionByPaytSrvcPrvdr": "92384394346739",
+                              "ReferenceDocument": "12435656",
+                              "AmountInTransactionCurrency": "23.45",
+                              "FeeAmountInTransactionCrcy": "0.23",
+                              "TransactionCurrency": "EUR",
+                              "TransactionFeePercentage": "0.00",
+                              "AmountInOriginalCurrency": "34.56",
+                              "OriginalCurrency": "USD",
+                              "TaxAmount": "2.34",
+                              "FinancialTransactionType": "Charge",
+                              "PaymentType": "PC",
+                              "DocumentDate": "2017-02-15",
+                              "ValueDate": "2017-03-01"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/adviceResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "This operation requests the advice items based on the advice parameters provided.",
+        "operationId": "POST_advice",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "AdviceRequestHeader": {
+                  "FromDate": "2017-01-23",
+                  "ToDate": "2017-01-24",
+                  "PaymentMethod": "CC",
+                  "IsReconciliation": "true"
+                },
+                "Merchants": [
+                  {
+                    "PaymentServiceProvider": "PayPal",
+                    "Account": "paypal@akron.com"
+                  },
+                  {
+                    "PaymentServiceProvider": "Stripe",
+                    "Account": "ac876578gg9967578"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/adviceRequest"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/authorization/initiate": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "DigitalPaymentTransaction": "15d73bda6fb690bb405cd8a4410acd55de92d266a31"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/initiateAuthorizationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Initiate the UI-enabled authorization process.",
+        "operationId": "POST_authorization-initiate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "PaymentCard": {
+                  "PaytCardByDigitalPaymentSrvc": "RVWBRS3NCEYDWGAQICCZARES"
+                },
+                "CustomerAccountNumber": "112AN45",
+                "MerchantOrderId": "5468785",
+                "PurchaseAmount": "123.45",
+                "PurchaseCurrency": "EUR",
+                "PurchaseDateTime": "2018-06-19T14:20:52Z",
+                "AmountInAuthorizationCurrency": "140.75",
+                "AuthorizationCurrency": "USD",
+                "ReferenceDocument": "4865448632",
+                "BillingAddress": {
+                  "CityName": "Walldorf",
+                  "AddressLine1": "Dietmar-Hopp-Allee",
+                  "AddressLine2": "16",
+                  "AddressLine3": "",
+                  "PostalCode": "69190",
+                  "CountryThreeDigitISOCode": "DEU",
+                  "RegionName": "BW"
+                },
+                "ShippingAddrSameAsBillingAddr": false,
+                "ShippingAddress": {
+                  "CityName": "Walldorf",
+                  "AddressLine1": "Dietmar-Hopp-Allee 16",
+                  "AddressLine2": "",
+                  "AddressLine3": "",
+                  "PostalCode": "69190",
+                  "CountryThreeDigitISOCode": "DEU",
+                  "RegionName": "BW"
+                },
+                "DigitalPaymentRelationType": "B2B",
+                "DigitalPaymentCommerceType": "ECOMMERCE",
+                "DigitalPaymentSessionType": "ONLINE",
+                "DgtlPaytAuthznRelationID": "ASD64536WE36483623235864",
+                "RoutingParameters": {
+                  "CustomParameterValue": "customer-defined string",
+                  "CompanyCode": "1010",
+                  "CustomerCountry": "DE",
+                  "PaymentMethod": "CC",
+                  "Currency": "EUR",
+                  "DgtlPaytSenderLogicalSystem": "0030390170AB3CLNT700"
+                },
+                "DgtlPaytAuthznScenarioType": "RECURRING_SUBSEQUENT",
+                "DgtlPaytAuthznInitiatedByRole": "CARDHOLDER"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/initiateAuthorizationRequest"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/paymentpage/initiate": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "DigitalPaymentTransaction": "15d73bda6fb690bb405cd8a4410acd44de92d266a31"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/initiatePaymentPageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Initiate the UI enabled payment process.",
+        "operationId": "POST_paymentpage-initiate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "PaymentCard": {
+                  "PaytCardByDigitalPaymentSrvc": "RVWBRS3NCEYDWGAQICCZARES"
+                },
+                "Customer": {
+                  "FirstName": "John",
+                  "LastName": "Doe",
+                  "EmailAddress": "john.doe@email.com",
+                  "OrganizationName": "John Doe Company Inc.",
+                  "CustomerAccountNumber": "112AN45"
+                },
+                "MerchantOrderId": "5468785",
+                "PurchaseAmount": "123.45",
+                "PurchaseCurrency": "EUR",
+                "PurchaseDateTime": "2018-06-19T14:20:52Z",
+                "AmountInTransactionCurrency": "140.75",
+                "TransactionCurrency": "USD",
+                "ReferenceDocument": "4865448632",
+                "BillingAddress": {
+                  "CityName": "Walldorf",
+                  "AddressLine1": "Dietmar-Hopp-Allee",
+                  "AddressLine2": "16",
+                  "AddressLine3": "",
+                  "PostalCode": "69190",
+                  "CountryThreeDigitISOCode": "DEU",
+                  "RegionName": "BW"
+                },
+                "ShippingAddrSameAsBillingAddr": false,
+                "ShippingAddress": {
+                  "CityName": "Walldorf",
+                  "AddressLine1": "Dietmar-Hopp-Allee 16",
+                  "AddressLine2": "",
+                  "AddressLine3": "",
+                  "PostalCode": "69190",
+                  "CountryThreeDigitISOCode": "DEU",
+                  "RegionName": "BW"
+                },
+                "DigitalPaymentRelationType": "B2B",
+                "DigitalPaymentCommerceType": "ECOMMERCE",
+                "DigitalPaymentSessionType": "ONLINE",
+                "DgtlPaytAuthznScenarioType": "RECURRING_INITIAL",
+                "PaymentCardAuthznRelationID": "ASD64536WE36483623235864",
+                "CustomParameterValue": "customer-defined string",
+                "CompanyCode": "1010",
+                "CustomerCountry": "DE",
+                "DgtlPaytSenderLogicalSystem": "0030390170AB3CLNT700"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/initiatePaymentPageRequest"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/paymentpage/finalize": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "DgtlPaytPaymentPageTransType": "AUTHORIZATION",
+                  "Authorization": {
+                    "AuthorizationByPaytSrvcPrvdr": "auth_4711",
+                    "AuthorizationByAcquirer": "acqu_4711",
+                    "AuthorizationByDigitalPaytSrvc": "ILZSGWLACY",
+                    "AuthorizedAmountInAuthznCrcy": "123.45",
+                    "PaymentCardAuthznRelationID": "893248943298234",
+                    "AuthorizationCurrency": "USD",
+                    "AuthorizationDateTime": "2016-11-02T15:55:48Z",
+                    "AuthorizationExpirationDateTme": "2016-11-09T15:55:48Z",
+                    "DetailedAuthorizationStatus": "100",
+                    "StatusDescription": "Successful",
+                    "DigitalPaymentFraudRisk": "NONE",
+                    "MerchantAlias": "ECOM_USD"
+                  }
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/finalizePaymentPageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_CHECKOUT_NOT_FINISHED",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Checkout transaction 15d73bda6fb690bb405cd8a4410acd44de92d266a31 still in progess.",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Finalize the UI enabled payment process and get the result.",
+        "operationId": "POST_paymentpage-finalize",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "DigitalPaymentTransaction": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+                "TransactionByPaytSrvcPrvdr": "tx_834873903290"
+              },
+              "schema": {
+                "$ref": "#/components/schemas/finalizePaymentPageRequest"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/paymentbylink/create": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "PayByLinkPaymentResponses": [
+                    {
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "17ef9032648779b4b264fbd460b819a97b404ebd7a6",
+                        "DigitalPaymentDateTime": "2022-02-14T16:14:00.264Z",
+                        "DigitalPaytTransResult": "01",
+                        "DigitalPaytTransRsltDesc": "Successful",
+                        "ReferenceDocument": "100018038474632022001"
+                      },
+                      "PaymentRequestBatchItem": 1,
+                      "ReferencedPaymentRequest": {
+                        "DigitalPaymentPaymentRequest": "YCXVWDHRWPRULJUGSIXSUKYUAQ",
+                        "PaymentRequestCheckoutURL": "https://server.digitalpayments.cfapps.eu10.hana.ondemand.com/paymentbylinkcheckout/index.html#pr=YCXVWDHRWPRULJUGSIXSUKYUAQ&v=NPDZXU4VKNHTI",
+                        "PaytRequestVerificationToken": "NPD-ZXU-4VK-NHT-I",
+                        "DigitalPaytPaymentReqStatus": "OPEN",
+                        "AmountInTransactionCurrency": "10.00",
+                        "TransactionCurrency": "EUR",
+                        "ReferenceDocument": "100018038474632022001",
+                        "ShippingAddrSameAsBillingAddr": "false",
+                        "BillingAddress": {
+                          "AddressLine1": "Dietmar-Hopp-Allee",
+                          "AddressLine2": "16",
+                          "AddressLine3": "",
+                          "PostalCode": "69190",
+                          "CityName": "Walldorf",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "ShippingAddress": {
+                          "AddressLine1": "Hauptstrasse",
+                          "AddressLine2": "20",
+                          "AddressLine3": "",
+                          "PostalCode": "69115",
+                          "CityName": "Heidelberg",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "DigitalPaymentRelationType": "B2B",
+                        "MemoLine": "Thank you for your purchase.",
+                        "PaymentTransactionDescription": "1010",
+                        "PaymentRequestConfiguration": "configx",
+                        "ValidToDateTime": "2022-06-19T14:20:52Z",
+                        "PayerPaymentRequestNote": "This is a nice note for the payer",
+                        "PaymentRequestCreationDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentReqLastChangeDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentAttempts": []
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/payByLinkCreatePaymentResponses"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Generate URLs, which can be sent to payers to pay via the link",
+        "operationId": "POST_paymentbylink-create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "PayByLinkPaymentRequests": [
+                  {
+                    "PaymentRequestBatchItem": 1,
+                    "AmountInTransactionCurrency": "10.00",
+                    "TransactionCurrency": "EUR",
+                    "ReferenceDocument": "100018038474632022001",
+                    "ShippingAddrSameAsBillingAddr": "false",
+                    "BillingAddress": {
+                      "AddressLine1": "Dietmar-Hopp-Allee",
+                      "AddressLine2": "16",
+                      "AddressLine3": "",
+                      "PostalCode": "69190",
+                      "CityName": "Walldorf",
+                      "CountryThreeDigitISOCode": "DEU",
+                      "RegionName": "BW"
+                    },
+                    "ShippingAddress": {
+                      "AddressLine1": "Hauptstrasse",
+                      "AddressLine2": "20",
+                      "AddressLine3": "",
+                      "PostalCode": "69115",
+                      "CityName": "Heidelberg",
+                      "CountryThreeDigitISOCode": "DEU",
+                      "RegionName": "BW"
+                    },
+                    "DigitalPaymentRelationType": "B2B",
+                    "MemoLine": "Thank you for your purchase.",
+                    "PaymentTransactionDescription": "1010",
+                    "PaymentRequestConfiguration": "configx",
+                    "ValidToDateTime": "2022-06-19T14:20:52Z",
+                    "PayerPaymentRequestNote": "This is a nice note for the payer"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/payByLinkCreatePaymentRequests"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/paymentbylink/cancel": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "PayByLinkPaymentResponses": [
+                    {
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "17ef9032648779b4b264fbd460b819a97b404ebd7a6",
+                        "DigitalPaymentDateTime": "2022-02-14T16:14:00.264Z",
+                        "DigitalPaytTransResult": "01",
+                        "DigitalPaytTransRsltDesc": "Successful",
+                        "ReferenceDocument": "100018038474632022001"
+                      },
+                      "ReferencedPaymentRequest": {
+                        "DigitalPaymentPaymentRequest": "YCXVWDHRWPRULJUGSIXSUKYUAQ",
+                        "PaymentRequestCheckoutURL": "https://server.digitalpayments.cfapps.eu10.hana.ondemand.com/paymentbylinkcheckout/index.html#pr=YCXVWDHRWPRULJUGSIXSUKYUAQ&v=NPDZXU4VKNHTI",
+                        "PaytRequestVerificationToken": "NPD-ZXU-4VK-NHT-I",
+                        "DigitalPaytPaymentReqStatus": "CANCEL",
+                        "AmountInTransactionCurrency": "10.00",
+                        "TransactionCurrency": "EUR",
+                        "ReferenceDocument": "100018038474632022001",
+                        "ShippingAddrSameAsBillingAddr": true,
+                        "DigitalPaymentRelationType": "B2B",
+                        "MemoLine": "Thank you for your purchase.",
+                        "PaymentTransactionDescription": "1010",
+                        "PaymentRequestConfiguration": "configx",
+                        "ValidToDateTime": "2022-06-19T14:20:52Z",
+                        "PayerPaymentRequestNote": "This is a nice note for the payer",
+                        "PaymentRequestCreationDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentReqLastChangeDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentAttempts": []
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/payByLinkCancelResponses"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Invalidate payment links",
+        "operationId": "POST_paymentbylink-cancel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "PayByLinkPaymentRequests": [
+                  {
+                    "DigitalPaymentPaymentRequest": "YCXVWDHRWPRULJUGSIXSUKYUAQ"
+                  },
+                  {
+                    "DigitalPaymentPaymentRequest": "4KL2CNH77ZVDEYTX4NP5TVDNFI"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/payByLinkGetRequests"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/paymentbylink/getbyid": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "PayByLinkPaymentResponses": [
+                    {
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "17ef90f1285c22434974a8e476398cfb932b172a8ea",
+                        "DigitalPaymentDateTime": "2022-02-14T16:27:01.638Z",
+                        "DigitalPaytTransResult": "01",
+                        "DigitalPaytTransRsltDesc": "Successful"
+                      },
+                      "ReferencedPaymentRequest": {
+                        "DigitalPaymentPaymentRequest": "YCXVWDHRWPRULJUGSIXSUKYUAQ",
+                        "PaymentRequestCheckoutURL": "https://server.digitalpayments.cfapps.eu10.hana.ondemand.com/paymentbylinkcheckout/index.html#pr=YCXVWDHRWPRULJUGSIXSUKYUAQ&v=NPDZXU4VKNHTI",
+                        "PaytRequestVerificationToken": "NPD-ZXU-4VK-NHT-I",
+                        "DigitalPaytPaymentReqStatus": "EXECUTED",
+                        "PaymentDetails": {
+                          "PaymentByDigitalPaytSrvc": "RS3NCZUIWGAQICC",
+                          "Source": {
+                            "Card": {
+                              "PaytCardByDigitalPaymentSrvc": "RVWBRS3NCZUIWGAQICCZARES"
+                            }
+                          },
+                          "Charge": {
+                            "PaymentByPaymentServicePrvdr": "281542168452374",
+                            "AmountInPaymentCurrency": "10.00",
+                            "PaymentCurrency": "EUR",
+                            "PaymentDateTime": "2022-02-14T17:14:00.289Z",
+                            "DetailedPaymentStatus": "100",
+                            "MerchantAlias": "ECOM_EUR"
+                          },
+                          "PaymentType": "PC"
+                        },
+                        "AmountInTransactionCurrency": "10.00",
+                        "TransactionCurrency": "EUR",
+                        "ReferenceDocument": "100018038474632022001",
+                        "ShippingAddrSameAsBillingAddr": "false",
+                        "BillingAddress": {
+                          "AddressLine1": "Dietmar-Hopp-Allee",
+                          "AddressLine2": "16",
+                          "AddressLine3": "",
+                          "PostalCode": "69190",
+                          "CityName": "Walldorf",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "ShippingAddress": {
+                          "AddressLine1": "Hauptstrasse",
+                          "AddressLine2": "20",
+                          "AddressLine3": "",
+                          "PostalCode": "69115",
+                          "CityName": "Heidelberg",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "DigitalPaymentRelationType": "B2B",
+                        "MemoLine": "Thank you for your purchase.",
+                        "PaymentTransactionDescription": "1010",
+                        "PaymentRequestConfiguration": "configx",
+                        "ValidToDateTime": "2022-06-19T14:20:52Z",
+                        "PayerPaymentRequestNote": "This is a nice note for the payer",
+                        "PaymentRequestCreationDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentReqLastChangeDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentAttempts": [
+                          {
+                            "PaymentRequestPaymentAttempt": "5946f7d337474b6e860c8eb2b5a7689a",
+                            "DigitalPaymentPaymentStatus": "100",
+                            "DigitalPaytPaytAttemptStatus": "SUCCESS",
+                            "PaymentAttemptCreationDateTime": "2022-02-14T17:14:00.289Z",
+                            "PaytAttemptLastChangeDateTime": "2022-02-14T17:14:00.289Z"
+                          },
+                          {
+                            "PaymentRequestPaymentAttempt": "5946f7d337474b6e860c8eb2b5a7689a",
+                            "DigitalPaymentPaymentStatus": "",
+                            "DigitalPaytPaytAttemptStatus": "CANCEL",
+                            "PaymentAttemptCreationDateTime": "2022-02-14T16:14:00.289Z",
+                            "PaytAttemptLastChangeDateTime": "2022-02-14T16:14:00.289Z"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "17ef90f128e6a4293da8ce84adfac65012d9c60496b",
+                        "DigitalPaymentDateTime": "2022-02-14T16:27:01.646Z",
+                        "DigitalPaytTransResult": "01",
+                        "DigitalPaytTransRsltDesc": "Successful"
+                      },
+                      "ReferencedPaymentRequest": {
+                        "DigitalPaymentPaymentRequest": "4KL2CNH77ZVDEYTX4NP5TVDNFI",
+                        "PaymentRequestCheckoutURL": "https://server.digitalpayments.cfapps.eu10.hana.ondemand.com/paymentbylinkcheckout/index.html#pr=4KL2CNH77ZVDEYTX4NP5TVDNFI&v=JQAURHNNSV2VE",
+                        "PaytRequestVerificationToken": "JQA-URH-NNS-V2V-E",
+                        "DigitalPaytPaymentReqStatus": "OPEN",
+                        "AmountInTransactionCurrency": "789.00",
+                        "TransactionCurrency": "EUR",
+                        "ReferenceDocument": "100018038474632022001",
+                        "ShippingAddrSameAsBillingAddr": "true",
+                        "BillingAddress": {
+                          "AddressLine1": "Dietmar-Hopp-Allee",
+                          "AddressLine2": "16",
+                          "AddressLine3": "",
+                          "PostalCode": "69190",
+                          "CityName": "Walldorf",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "DigitalPaymentRelationType": "B2B",
+                        "MemoLine": "Thank you for your purchase.",
+                        "PaymentTransactionDescription": "1010",
+                        "PaymentRequestConfiguration": "configx",
+                        "ValidToDateTime": "2022-06-19T14:20:52Z",
+                        "PayerPaymentRequestNote": "This is a nice note for the payer",
+                        "PaymentRequestCreationDateTime": "2022-02-14T16:22:22.477Z",
+                        "PaymentReqLastChangeDateTime": "2022-02-14T16:22:22.477Z",
+                        "PaymentAttempts": []
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/payByLinkPaymentResponses"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve information on payment links",
+        "operationId": "POST_paymentbylink-getbyid",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "PayByLinkPaymentRequests": [
+                  {
+                    "DigitalPaymentPaymentRequest": "YCXVWDHRWPRULJUGSIXSUKYUAQ"
+                  },
+                  {
+                    "DigitalPaymentPaymentRequest": "4KL2CNH77ZVDEYTX4NP5TVDNFI"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/payByLinkGetRequests"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    },
+    "/paymentbylink/adjustvalidity": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "AdjustValidityResponses": [
+                    {
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "17ef90f1285c22434974a8e476398cfb932b172a8ea",
+                        "DigitalPaymentDateTime": "2022-02-14T16:27:01.638Z",
+                        "DigitalPaytTransResult": "01",
+                        "DigitalPaytTransRsltDesc": "Successful"
+                      },
+                      "ReferencedPaymentRequest": {
+                        "DigitalPaymentPaymentRequest": "YCXVWDHRWPRULJUGSIXSUKYUAQ",
+                        "PaymentRequestCheckoutURL": "https://server.digitalpayments.cfapps.eu10.hana.ondemand.com/paymentbylinkcheckout/index.html#pr=YCXVWDHRWPRULJUGSIXSUKYUAQ&v=NPDZXU4VKNHTI",
+                        "PaytRequestVerificationToken": "NPD-ZXU-4VK-NHT-I",
+                        "DigitalPaytPaymentReqStatus": "EXECUTED",
+                        "PaymentDetails": {
+                          "PaymentByDigitalPaytSrvc": "RS3NCZUIWGAQICC",
+                          "Source": {
+                            "Card": {
+                              "PaytCardByDigitalPaymentSrvc": "RVWBRS3NCZUIWGAQICCZARES"
+                            }
+                          },
+                          "Charge": {
+                            "PaymentByPaymentServicePrvdr": "281542168452374",
+                            "AmountInPaymentCurrency": "10.00",
+                            "PaymentCurrency": "EUR",
+                            "PaymentDateTime": "2022-02-14T17:14:00.289Z",
+                            "DetailedPaymentStatus": "100",
+                            "MerchantAlias": "ECOM_EUR"
+                          },
+                          "PaymentType": "PC"
+                        },
+                        "AmountInTransactionCurrency": "10.00",
+                        "TransactionCurrency": "EUR",
+                        "ReferenceDocument": "100018038474632022001",
+                        "ShippingAddrSameAsBillingAddr": "false",
+                        "BillingAddress": {
+                          "AddressLine1": "Dietmar-Hopp-Allee",
+                          "AddressLine2": "16",
+                          "AddressLine3": "",
+                          "PostalCode": "69190",
+                          "CityName": "Walldorf",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "ShippingAddress": {
+                          "AddressLine1": "Hauptstrasse",
+                          "AddressLine2": "20",
+                          "AddressLine3": "",
+                          "PostalCode": "69115",
+                          "CityName": "Heidelberg",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "DigitalPaymentRelationType": "B2B",
+                        "MemoLine": "Thank you for your purchase.",
+                        "PaymentTransactionDescription": "1010",
+                        "PaymentRequestConfiguration": "configx",
+                        "ValidToDateTime": "2022-06-19T14:20:52Z",
+                        "PayerPaymentRequestNote": "This is a nice note for the payer",
+                        "PaymentRequestCreationDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentReqLastChangeDateTime": "2022-02-14T16:14:00.289Z",
+                        "PaymentAttempts": [
+                          {
+                            "PaymentRequestPaymentAttempt": "5946f7d337474b6e860c8eb2b5a7689a",
+                            "DigitalPaymentPaymentStatus": "100",
+                            "DigitalPaytPaytAttemptStatus": "SUCCESS",
+                            "PaymentAttemptCreationDateTime": "2022-02-14T17:14:00.289Z",
+                            "PaytAttemptLastChangeDateTime": "2022-02-14T17:14:00.289Z"
+                          },
+                          {
+                            "PaymentRequestPaymentAttempt": "5946f7d337474b6e860c8eb2b5a7689a",
+                            "DigitalPaymentPaymentStatus": "",
+                            "DigitalPaytPaytAttemptStatus": "CANCEL",
+                            "PaymentAttemptCreationDateTime": "2022-02-14T16:14:00.289Z",
+                            "PaytAttemptLastChangeDateTime": "2022-02-14T16:14:00.289Z"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "DigitalPaymentTransaction": {
+                        "DigitalPaymentTransaction": "17ef90f128e6a4293da8ce84adfac65012d9c60496b",
+                        "DigitalPaymentDateTime": "2022-02-14T16:27:01.646Z",
+                        "DigitalPaytTransResult": "01",
+                        "DigitalPaytTransRsltDesc": "Successful"
+                      },
+                      "ReferencedPaymentRequest": {
+                        "DigitalPaymentPaymentRequest": "4KL2CNH77ZVDEYTX4NP5TVDNFI",
+                        "PaymentRequestCheckoutURL": "https://server.digitalpayments.cfapps.eu10.hana.ondemand.com/paymentbylinkcheckout/index.html#pr=4KL2CNH77ZVDEYTX4NP5TVDNFI&v=JQAURHNNSV2VE",
+                        "PaytRequestVerificationToken": "JQA-URH-NNS-V2V-E",
+                        "DigitalPaytPaymentReqStatus": "OPEN",
+                        "AmountInTransactionCurrency": "789.00",
+                        "TransactionCurrency": "EUR",
+                        "ReferenceDocument": "100018038474632022001",
+                        "ShippingAddrSameAsBillingAddr": "true",
+                        "BillingAddress": {
+                          "AddressLine1": "Dietmar-Hopp-Allee",
+                          "AddressLine2": "16",
+                          "AddressLine3": "",
+                          "PostalCode": "69190",
+                          "CityName": "Walldorf",
+                          "CountryThreeDigitISOCode": "DEU",
+                          "RegionName": "BW"
+                        },
+                        "DigitalPaymentRelationType": "B2B",
+                        "MemoLine": "Thank you for your purchase.",
+                        "PaymentTransactionDescription": "1010",
+                        "PaymentRequestConfiguration": "configx",
+                        "ValidToDateTime": "2022-06-19T14:20:52Z",
+                        "PayerPaymentRequestNote": "This is a nice note for the payer",
+                        "PaymentRequestCreationDateTime": "2022-02-14T16:22:22.477Z",
+                        "PaymentReqLastChangeDateTime": "2022-02-14T16:22:22.477Z",
+                        "PaymentAttempts": []
+                      }
+                    }
+                  ]
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/payByLinkAdjustValidityResponses"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "Id": "CORE_AUTHORIZATION_NOT_FOUND",
+                  "Message": "Bad Request",
+                  "CorrelationId": "5358367236",
+                  "DetailedMessage": "Authorization 4FR576724 does not exist",
+                  "ErrorTimestamp": "2020-02-20T14:51:45.801Z",
+                  "SourceArtifact": "core"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/extendedError"
+                }
+              }
+            }
+          }
+        },
+        "description": "Adjust validity of payment requests",
+        "operationId": "POST_paymentbylink-adjustvalidity",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "example": {
+                "PayByLinkPaymentRequests": [
+                  {
+                    "DigitalPaymentPaymentRequest": "YCXVWDHRWPRULJUGSIXSUKYUAQ",
+                    "ValidToDateTime": "2023-01-25T10:38:52Z"
+                  },
+                  {
+                    "DigitalPaymentPaymentRequest": "4KL2CNH77ZVDEYTX4NP5TVDNFI",
+                    "ValidToDateTime": "2023-01-25T10:38:52Z"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/components/schemas/payByLinkAdjustValidityRequests"
+              }
+            }
+          },
+          "required": false
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "reauthorizationRequests": {
+        "type": "object",
+        "properties": {
+          "Reauthorizations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/reauthorizationRequest"
+            }
+          }
+        }
+      },
+      "reauthorizationRequest": {
+        "type": "object",
+        "properties": {
+          "AuthorizationByDigitalPaytSrvc": {
+            "maxLength": 10,
+            "description": "Unique identifier provided by SAP digital payments add-on for the authorization, which needs to be reauthorized.",
+            "example": "WKN4Q09TR1",
+            "type": "string"
+          },
+          "AmountInAuthorizationCurrency": {
+            "maxLength": 40,
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Amount to be reauthorized. If empty, the amount from original authorization will be taken.",
+            "example": "140.75",
+            "type": "string"
+          },
+          "ReauthorizationReasonCode": {
+            "description": "Code to indicate the need of reauthorization. Mandatory if PaymentCardAuthznRelationID is filled.",
+            "example": "LATE_DELIVERY",
+            "enum": [
+              "LATE_DELIVERY",
+              "EXPIRED_AUTHORIZATION"
+            ],
+            "type": "string"
+          },
+          "PaymentCardAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Deprecated - Use DgtlPaytAuthznRelationID. Unique identifier of the previous successful authorization to represent a link to current reauthorization request. Mandatory if ReauthorizationReasonCode is filled.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "DgtlPaytAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier of a previous successful authorization to represent a link to current authorization request. Must be empty, if the authorization to be initiated is not associated to any other previous authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          }
+        },
+        "required": [
+          "AuthorizationByDigitalPaytSrvc"
+        ]
+      },
+      "reauthorizationResponses": {
+        "type": "object",
+        "properties": {
+          "Reauthorizations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/reauthorizationResponse"
+            }
+          }
+        }
+      },
+      "reauthorizationResponse": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "$ref": "#/components/schemas/digitalPaymentTransaction"
+          },
+          "PreviousAuthznByDgtlPaytSrvc": {
+            "maxLength": 10,
+            "description": "Unique identifier of original authorization, provided by SAP digital payments add-on.",
+            "example": "WKN4Q09TR1",
+            "type": "string"
+          },
+          "Authorization": {
+            "$ref": "#/components/schemas/authorization"
+          },
+          "DgtlPaytAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier of a previous successful authorization to represent a link to current authorization request. Must be empty, if the authorization to be initiated is not associated to any other previous authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction",
+          "PreviousAuthznByDgtlPaytSrvc"
+        ]
+      },
+      "digitalPaymentTransaction": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "maxLength": 44,
+            "description": "Unique identifier provided by SAP to represent a transaction processed in SAP digital payments add-on",
+            "example": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+            "type": "string"
+          },
+          "DigitalPaymentDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) when the transaction was processed in SAP digital payments add-on.",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "DigitalPaytTransResult": {
+            "minLength": 2,
+            "maxLength": 2,
+            "description": "Result of a digital payment transaction (01 - Successful, 02 - Not successful, 03 - Pending, 04 - Timeout, 05 - Canceled)",
+            "example": "01",
+            "type": "string"
+          },
+          "DigitalPaytTransRsltDesc": {
+            "maxLength": 1000,
+            "description": "Description of the result of the transaction (only to be filled if DigitalPaytTransResult was not successful). Description will not be translated.",
+            "example": "ERR_01: Missing credentials",
+            "type": "string"
+          },
+          "RequestByPaytSrvcPrvdr": {
+            "maxLength": 40,
+            "description": "Request Id issued by the Payment Service Provider. This field may only be filled in a response from SAP digital payments add-on. Use this Id to identify your request at the Payment Service Provider.",
+            "example": "CB4ZG64HI",
+            "type": "string"
+          },
+          "ReferenceDocument": {
+            "maxLength": 50,
+            "description": "Identifier supplied by the consumer to represent the referenced document",
+            "example": "4865448632",
+            "type": "string"
+          },
+          "Error": {
+            "$ref": "#/components/schemas/extendedError"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction",
+          "DigitalPaymentDateTime",
+          "DigitalPaytTransResult"
+        ]
+      },
+      "authorization": {
+        "type": "object",
+        "properties": {
+          "AuthorizationByPaytSrvcPrvdr": {
+            "maxLength": 30,
+            "description": "Unique identifier provided by a payment service provider to represent an authorization",
+            "example": "auth_4711",
+            "type": "string"
+          },
+          "AuthorizationByAcquirer": {
+            "maxLength": 30,
+            "description": "Unique identifier provided by an acquirer to represent an authorization. Can be empty, if payment service provider does not use an acquirer.",
+            "example": "acqu_4711",
+            "type": "string"
+          },
+          "AuthorizationByDigitalPaytSrvc": {
+            "maxLength": 10,
+            "description": "Unique identifier provided by SAP digital payments add-on. Can be used as an alternative to the identification provided by the payment service provider if the connected system cannot process long authorization identifiers.",
+            "example": "ILZSGWLACY",
+            "type": "string"
+          },
+          "PaymentCardAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Deprecated - Use DgtlPaytAuthznRelationID. Unique identifier representing a link to current authorization. Can be used in a subsequent payment authorization request to refer to the (auto-)approval provided with this authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "AuthorizedAmountInAuthznCrcy": {
+            "maxLength": 40,
+            "pattern": "^(0|[1-9]\\d*)(\\.\\d{0,6})?$",
+            "description": "Authorized amount",
+            "example": "123.45",
+            "type": "string"
+          },
+          "AuthorizationCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "pattern": "^[A-Za-z]{3}$",
+            "description": "Currency code (using ISO 4217) of the authorized amount",
+            "example": "EUR",
+            "type": "string"
+          },
+          "AuthorizationDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) when the authorization was processed at the payment service provider",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "AuthorizationExpirationDateTme": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) when the authorization will expire at the payment service provider. Can be empty, if payment service provider does not support this functionality.",
+            "example": "2018-06-23T14:20:52Z",
+            "type": "string"
+          },
+          "DetailedAuthorizationStatus": {
+            "$ref": "#/components/schemas/processingStatus"
+          },
+          "DigitalPaymentFraudRisk": {
+            "$ref": "#/components/schemas/fraudRisk"
+          },
+          "StatusDescription": {
+            "maxLength": 255,
+            "description": "Status code value name or human readable error description if DetailedAuthorizationStatus is not 100",
+            "example": "The processing was completed successfully.",
+            "type": "string"
+          },
+          "MerchantAlias": {
+            "maxLength": 15,
+            "description": "Merchant Alias Identifier.",
+            "example": "SHOPEUR",
+            "type": "string"
+          },
+          "MerchantAccount": {
+            "maxLength": 256,
+            "description": "Payment service provider merchant (account) identifier",
+            "example": "SHOP_USD or SALES_NORTH or 12345@psp_name.com",
+            "type": "string"
+          },
+          "PaymentServiceProvider": {
+            "description": "Four digit payment service provider code with which transaction was done",
+            "example": "DPXX",
+            "type": "string"
+          }
+        }
+      },
+      "extendedError": {
+        "title": "Error Response",
+        "type": "object",
+        "properties": {
+          "Id": {
+            "maxLength": 40,
+            "description": "The error's unique identifier",
+            "type": "string"
+          },
+          "Message": {
+            "maxLength": 255,
+            "description": "Generic message e.g. Internal server error occurred",
+            "type": "string"
+          },
+          "DetailedMessage": {
+            "maxLength": 255,
+            "description": "A human readable error message",
+            "type": "string"
+          },
+          "ErrorTimestamp": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (ISO 8601) when the error occurred",
+            "example": "2018-06-19T14: 20: 52Z",
+            "type": "string"
+          },
+          "CorrelationId": {
+            "maxLength": 20,
+            "description": "The ID to identify the transaction generated from one single request",
+            "example": "5358367236",
+            "type": "string"
+          },
+          "RequestByPaytSrvcPrvdr": {
+            "maxLength": 40,
+            "description": "Request Id issued by the Payment Service Provider. This provides a unique identifier to the consumer of the service.",
+            "example": "CB4ZG64HI",
+            "type": "string"
+          },
+          "SourceArtifact": {
+            "maxLength": 20,
+            "description": "The artifact to identify where the issue comes from. E.g. component",
+            "example": "component",
+            "type": "string"
+          },
+          "MessageAttributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/errorResponseNameValue"
+            }
+          }
+        },
+        "required": [
+          "Id",
+          "Message"
+        ]
+      },
+      "errorResponseNameValue": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "maxLength": 80,
+            "description": "Name",
+            "type": "string"
+          },
+          "Value": {
+            "maxLength": 255,
+            "description": "Value",
+            "type": "string"
+          }
+        }
+      },
+      "processingStatus": {
+        "description": "Status codes for describing the result of transactions. For the description of each status code, please refer to the additional development guideline.",
+        "example": "100",
+        "enum": [
+          "100",
+          "110",
+          "201",
+          "202",
+          "210",
+          "211",
+          "212",
+          "213",
+          "220",
+          "221",
+          "222",
+          "299",
+          "301",
+          "302",
+          "311",
+          "312",
+          "400",
+          "401",
+          "500",
+          "501",
+          "600",
+          "601",
+          "602"
+        ],
+        "type": "string"
+      },
+      "adviceRequest": {
+        "type": "object",
+        "properties": {
+          "AdviceRequestHeader": {
+            "$ref": "#/components/schemas/adviceRequestHeader"
+          },
+          "Merchants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/merchant"
+            }
+          }
+        }
+      },
+      "adviceResponse": {
+        "type": "object",
+        "properties": {
+          "AdviceResponseHeader": {
+            "$ref": "#/components/schemas/adviceResponseHeader"
+          },
+          "AdviceResponseItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/adviceResponseItem"
+            }
+          }
+        },
+        "required": [
+          "AdviceResponseHeader",
+          "AdviceResponseItems"
+        ]
+      },
+      "merchant": {
+        "type": "object",
+        "properties": {
+          "PaymentServiceProvider": {
+            "maxLength": 4,
+            "minLength": 4,
+            "description": "Four digit payment service provider code with which transaction was done",
+            "example": "DPXX",
+            "type": "string"
+          },
+          "Account": {
+            "maxLength": 256,
+            "description": "Payment service provider merchant (account) identifier",
+            "example": "SHOP_USD or SALES_NORTH or 12345@psp_name.com",
+            "type": "string"
+          },
+          "MerchantAlias": {
+            "maxLength": 15,
+            "description": "Merchant Alias Identifier",
+            "example": "SHOPEUR",
+            "type": "string"
+          }
+        }
+      },
+      "adviceRequestHeader": {
+        "type": "object",
+        "properties": {
+          "FromDate": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Start date for advices to be retrieved. Start time will implicitly be 00:00am UTC",
+            "example": "2015-05-23",
+            "type": "string"
+          },
+          "ToDate": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "End date for advices to be retrieved. End time will implicitly be the last possible system time (UTC) for day concerned",
+            "example": "2015-05-23",
+            "type": "string"
+          },
+          "PaymentMethod": {
+            "description": "Payment method, like 'CC' or 'EP'",
+            "example": "CC",
+            "type": "string"
+          },
+          "IsReconciliation": {
+            "description": "This flag is enabling retrieving of data, which was already retrieved",
+            "example": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "FromDate",
+          "ToDate",
+          "PaymentMethod",
+          "IsReconciliation"
+        ]
+      },
+      "adviceResponseHeader": {
+        "type": "object",
+        "properties": {
+          "FromDate": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Start date for advices to be retrieved. Start time will implicitly be 00:00am UTC.",
+            "example": "2015-05-23",
+            "type": "string"
+          },
+          "ToDate": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "End date for advices to be retrieved. End time will implicitly be the last possible system time (UTC) for day concerned.",
+            "example": "2015-05-23",
+            "type": "string"
+          },
+          "PaymentMethod": {
+            "description": "Payment method, like 'CC' or 'EP'",
+            "example": "CC",
+            "type": "string"
+          }
+        },
+        "required": [
+          "FromDate",
+          "ToDate",
+          "PaymentMethod"
+        ]
+      },
+      "adviceResponseItem": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "$ref": "#/components/schemas/digitalPaymentTransaction"
+          },
+          "Merchant": {
+            "$ref": "#/components/schemas/merchant"
+          },
+          "AdviceTransactions": {
+            "description": "Array of type 'AdviceTransaction'",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/adviceTransaction"
+            }
+          }
+        }
+      },
+      "adviceTransaction": {
+        "type": "object",
+        "properties": {
+          "PaymentByDigitalPaymentService": {
+            "description": "Unique identifier provided by SAP digital payments add-on for any kind of payment",
+            "example": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+            "type": "string"
+          },
+          "TransactionByPaytSrvcPrvdr": {
+            "description": "Unique identifier of a transaction processed by a Payment Service Provider",
+            "example": "ch_36453645364836",
+            "type": "string"
+          },
+          "ReferenceDocument": {
+            "description": "Document number of original invoice to be payed",
+            "example": "4a865448632",
+            "type": "string"
+          },
+          "AmountInTransactionCurrency": {
+            "description": "Amount of transaction in transaction currency (USD, if user pays in Euro but transaction currency is USD)",
+            "example": "123.45",
+            "type": "string"
+          },
+          "FeeAmountInTransactionCrcy": {
+            "description": "Transaction fee in transaction currency (USD, if user pays in Euro but transaction currency is USD)",
+            "example": "1.23",
+            "type": "string"
+          },
+          "TransactionCurrency": {
+            "description": "Currency valid for transaction (USD, if user pays in Euro but transaction currency is USD)",
+            "example": "USD",
+            "type": "string"
+          },
+          "TransactionFeePercentage": {
+            "description": "Percentage value for transaction fee, corresponding to 'FeeAmountInTransactionCrcy'",
+            "example": "1.00",
+            "type": "string"
+          },
+          "AmountInOriginalCurrency": {
+            "description": "Amount of original payment currency (e.g. EUR in case user pays in Euro, but transaction currency is USD)",
+            "example": "234.56",
+            "type": "string"
+          },
+          "OriginalCurrency": {
+            "description": "Currency valid for transaction (e.g. EUR, in case user pays in Euro, but transaction currency is USD)",
+            "example": "EUR",
+            "type": "string"
+          },
+          "TaxAmount": {
+            "description": "Tax amount in transaction currency (e.g. USD, in case user pays in Euro, but transaction currency is USD)",
+            "example": "12.34",
+            "type": "string"
+          },
+          "FinancialTransactionType": {
+            "description": "possible values are '100' for 'Charge', '200' for 'Refund', '500' for 'Withdrawal', '510' for 'Deposit', '400' for 'Currency Conv', '300' for 'Fee', '600' for 'Account to Account', '999' for 'Other'",
+            "example": "100",
+            "type": "string"
+          },
+          "FinancialTransactionTypeDescription": {
+            "description": "Deprecated - DO NOT USE",
+            "type": "string"
+          },
+          "PaymentType": {
+            "description": "Only for ExternalPayment. Leave empty for payments via Credit Card",
+            "example": "PP",
+            "type": "string"
+          },
+          "DocumentDate": {
+            "description": "Date of the advice document as provided by Payment Service Provider.",
+            "example": "2017-03-01",
+            "type": "string"
+          },
+          "ValueDate": {
+            "description": "Date on which allocated, budgeted, or contracted funds are paid, received, or used, as provided by Payment Service Provider",
+            "example": "2017-03-01",
+            "type": "string"
+          },
+          "DigitalPaymentPaymentRequest": {
+            "maxLength": 40,
+            "description": "Identifier of a PaymentByLink Payment Request, if applicable",
+            "example": "KY2AUWQKAH72JUT2FWGKIH3XNU",
+            "type": "string"
+          }
+        },
+        "required": [
+          "TransactionByPaytSrvcPrvdr",
+          "ReferenceDocument",
+          "AmountInTransactionCurrency",
+          "FeeAmountInTransactionCrcy",
+          "TransactionCurrency",
+          "TransactionFeePercentage",
+          "AmountInOriginalCurrency",
+          "OriginalCurrency",
+          "TaxAmount",
+          "FinancialTransactionType",
+          "PaymentType",
+          "DocumentDate",
+          "ValueDate"
+        ]
+      },
+      "getAuthorizationByDPTrnxRequest": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "maxLength": 44,
+            "description": "Unique identifier provided by SAP to represent the authorization processed in SAP digital payments add-on",
+            "example": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+            "type": "string"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction"
+        ]
+      },
+      "initiateAuthorizationRequest": {
+        "description": "The property ShippingAddress is optional if no physical shipment of goods takes place or if the value of ShippingAddrSameAsBillingAddr is true",
+        "type": "object",
+        "properties": {
+          "PaymentCard": {
+            "$ref": "#/components/schemas/paymentCard"
+          },
+          "CustomerAccountNumber": {
+            "maxLength": 10,
+            "description": "Identifier of the customer at the merchant",
+            "example": "112AN45",
+            "type": "string"
+          },
+          "MerchantOrderId": {
+            "maxLength": 30,
+            "description": "Identifier of the order at the merchant",
+            "example": "5468785",
+            "type": "string"
+          },
+          "PurchaseAmount": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Total amount of the transaction for which the authorization is requested not necessarily the AmountInAuthorizationCurrency. In the case of payment card authorization it is equal to the PurchaseAmount as defined by EMV 3-D Secure Protocol including but not limited to the gross amount of the shopping cart",
+            "example": "123.45",
+            "type": "string"
+          },
+          "PurchaseCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the purchase; mandatory if PurchaseAmount is provided",
+            "example": "EUR",
+            "type": "string"
+          },
+          "PurchaseDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Purchase creation timestamp (UTC)",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "AmountInAuthorizationCurrency": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Amount to be authorized",
+            "example": "140.75",
+            "type": "string"
+          },
+          "AuthorizationCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the amount that should be authorized",
+            "example": "USD",
+            "type": "string"
+          },
+          "ReferenceDocument": {
+            "maxLength": 50,
+            "description": "Identifier supplied by the consumer to represent the referenced document",
+            "example": "4865448632",
+            "type": "string"
+          },
+          "PaymentCardAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Obsolete - use DgtlPaytAuthznRelationID instead",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "DgtlPaytAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier of a previous successful authorization to represent a link to current authorization request. Must be empty, if the authorization to be initiated is not associated to any other previous authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "ShippingAddrSameAsBillingAddr": {
+            "description": "Abbreviation for ShippingAddressSameAsBillingAddress",
+            "example": false,
+            "type": "boolean"
+          },
+          "BillingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "ShippingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "DigitalPaymentRelationType": {
+            "$ref": "#/components/schemas/digitalPaymentRelationType"
+          },
+          "DigitalPaymentCommerceType": {
+            "$ref": "#/components/schemas/digitalPaymentCommerceType"
+          },
+          "DigitalPaymentSessionType": {
+            "$ref": "#/components/schemas/digitalPaymentSessionType"
+          },
+          "RoutingParameters": {
+            "$ref": "#/components/schemas/routingParameters"
+          },
+          "ChargeIsProcessedExternally": {
+            "description": "Indicator to mark authorization to be charged externally.",
+            "example": true,
+            "type": "boolean"
+          },
+          "DgtlPaytAuthznScenarioType": {
+            "$ref": "#/components/schemas/digitalPaymentAuthorizationScenarioType"
+          },
+          "DgtlPaytAuthznInitiatedByRole": {
+            "$ref": "#/components/schemas/digitalPaymentAuthorizationInitiatedByRole"
+          }
+        },
+        "required": [
+          "PaymentCard",
+          "AmountInAuthorizationCurrency",
+          "AuthorizationCurrency",
+          "DigitalPaymentCommerceType",
+          "DigitalPaymentSessionType"
+        ]
+      },
+      "initiateAuthorizationResponse": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "description": "Unique identifier provided by SAP to represent a transaction processed in SAP digital payments add-on",
+            "example": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+            "type": "string"
+          }
+        }
+      },
+      "paymentAuthorizationAddress": {
+        "type": "object",
+        "properties": {
+          "AddressLine1": {
+            "maxLength": 50,
+            "description": "First line of the street address or equivalent local portion of the address",
+            "example": "Dietmar-Hopp-Allee",
+            "type": "string"
+          },
+          "AddressLine2": {
+            "maxLength": 50,
+            "description": "The second line of the street address or equivalent local portion of the address",
+            "example": "16",
+            "type": "string"
+          },
+          "AddressLine3": {
+            "maxLength": 50,
+            "description": "The third line of the street address or equivalent local portion of the address",
+            "example": "",
+            "type": "string"
+          },
+          "PostalCode": {
+            "maxLength": 16,
+            "description": "The ZIP or other postal code of the address",
+            "example": "69190",
+            "type": "string"
+          },
+          "CityName": {
+            "maxLength": 50,
+            "description": "The name of the city of the address",
+            "example": "Walldorf",
+            "type": "string"
+          },
+          "CountryThreeDigitISOCode": {
+            "maxLength": 3,
+            "description": "The code of the country. It shall be the ISO 3166-1 alphanumeric (sic!) three character country code.",
+            "example": "DEU",
+            "type": "string"
+          },
+          "RegionName": {
+            "maxLength": 3,
+            "description": "The state or province of the address. Should be the country subdivision code defined in ISO 3166-2.",
+            "example": "BW",
+            "type": "string"
+          }
+        }
+      },
+      "digitalPaymentRelationType": {
+        "description": "Type of business relation associated with the transaction request supported by SAP digital payments add-on",
+        "enum": [
+          "B2B",
+          "B2C"
+        ],
+        "type": "string"
+      },
+      "digitalPaymentCommerceType": {
+        "description": "Type of commerce associated with the transaction request supported by the SAP digital payments add-on.<br>MOTO indicates that a Mail Order or a Telephone Order is being processed. ECOMMERCE indicates that a transaction is being performed using an online service or via the Internet.<br>The commerce type MOTO is not compatible with the session type ONLINE.",
+        "enum": [
+          "ECOMMERCE",
+          "MOTO"
+        ],
+        "type": "string"
+      },
+      "digitalPaymentSessionType": {
+        "description": "Type of session associated with the creation of the business transaction, indicating whether the end user (e. g. cardholder) is/was present during the transaction (ONLINE) or not (OFFLINE). To be considered as ONLINE, the end user must be able to react to inquiries from the system via the user interface. An agent (e.g. a call center agent) is not considered equivalent to an end user.<br>The session type ONLINE is not compatible with the commerce type MOTO.",
+        "enum": [
+          "ONLINE",
+          "OFFLINE"
+        ],
+        "type": "string"
+      },
+      "digitalPaymentAuthorizationScenarioType": {
+        "description": "Describes the type of the business scenario for a payment authorization, e.g. indicating that an authorization is a starting point for a recurring payment. If not specified otherwise, the implicit default value is UNASSOCIATED.",
+        "enum": [
+          "UNASSOCIATED",
+          "RECURRING_INITIAL",
+          "RECURRING_SUBSEQUENT",
+          "RECURRING_EBA_INITIAL",
+          "RECURRING_EBA_SUBSEQUENT"
+        ],
+        "type": "string"
+      },
+      "digitalPaymentAuthorizationInitiatedByRole": {
+        "description": "Describes the role which has initiated the payment process",
+        "enum": [
+          "CARDHOLDER",
+          "MERCHANT"
+        ],
+        "type": "string"
+      },
+      "routingParameters": {
+        "description": "Routing parameters to determine PSP and associated merchant ID",
+        "type": "object",
+        "properties": {
+          "CustomParameterValue": {
+            "description": "Routing parameter to determine PSP and associated merchant ID using custom value",
+            "type": "string"
+          },
+          "CompanyCode": {
+            "description": "Routing parameter to determine PSP and associated merchant ID using company code",
+            "example": "1010",
+            "type": "string"
+          },
+          "CustomerCountry": {
+            "description": "Routing parameter to determine PSP and associated merchant ID using country of customer",
+            "example": "DE",
+            "type": "string"
+          },
+          "PaymentMethod": {
+            "$ref": "#/components/schemas/paymentMethod"
+          },
+          "Currency": {
+            "description": "Routing parameter to determine PSP and associated merchant ID using currency",
+            "example": "EUR",
+            "type": "string"
+          },
+          "PaymentType": {
+            "$ref": "#/components/schemas/externalPaymentType"
+          },
+          "DgtlPaytSenderLogicalSystem": {
+            "maxLength": 20,
+            "description": "Routing parameter to determine PSP and associated merchant ID using the unique identifier of the system sending the request to the SAP digital payments add-on",
+            "example": "0030390170AB3CLNT700",
+            "type": "string"
+          }
+        }
+      },
+      "paymentCard": {
+        "type": "object",
+        "properties": {
+          "PaymentCardType": {
+            "description": "Four digit brand code of the payment card. Allowed code values: <br> DPAM - American Express <br> DPVI - VISA <br> DPMC - MasterCard <br> DPDI - Diners Club <br> DPDS - Discover Card [US only] <br> DPJC - JCB <br> PLDC - PINLess Debit Card",
+            "example": "DPVI",
+            "type": "string"
+          },
+          "PaymentCardExpirationMonth": {
+            "maxLength": 2,
+            "description": "Payment card valid-to month",
+            "example": "04",
+            "type": "string"
+          },
+          "PaymentCardExpirationYear": {
+            "maxLength": 4,
+            "description": "Payment card valid-to year",
+            "example": "2023",
+            "type": "string"
+          },
+          "PaymentCardMaskedNumber": {
+            "description": "Masked representation of a payment card showing only a few digits of the full payment card number",
+            "example": "************4823",
+            "type": "string"
+          },
+          "PaymentCardHolderName": {
+            "description": "Holder (person or organization) that is printed on a payment card",
+            "example": "John Doe",
+            "type": "string"
+          },
+          "PaytCardByDigitalPaymentSrvc": {
+            "maxLength": 25,
+            "description": "Payment card token provided by the SAP digital payments add-on.",
+            "example": "RVWBRS3NCEYDWGAQICCZARES",
+            "type": "string"
+          }
+        }
+      },
+      "customer": {
+        "type": "object",
+        "properties": {
+          "FirstName": {
+            "maxLength": 128,
+            "description": "First name of a person.",
+            "example": "John",
+            "type": "string"
+          },
+          "LastName": {
+            "maxLength": 128,
+            "description": "Last name of a person.",
+            "example": "Doe",
+            "type": "string"
+          },
+          "EmailAddress": {
+            "maxLength": 256,
+            "description": "The email address that is assigned to a person.",
+            "example": "john.doe@email.com",
+            "type": "string"
+          },
+          "OrganizationName": {
+            "maxLength": 128,
+            "description": "The name of the customer's organization.",
+            "example": "John Doe Company Inc.",
+            "type": "string"
+          },
+          "CustomerAccountNumber": {
+            "maxLength": 10,
+            "description": "The identifier of the customer at the merchant.",
+            "example": "112AN45",
+            "type": "string"
+          }
+        }
+      },
+      "externalPaymentType": {
+        "description": "An identifier indicating the type of external payment shall be performed",
+        "example": "PP",
+        "enum": [
+          "PP"
+        ],
+        "type": "string"
+      },
+      "paymentMethod": {
+        "description": "An identifier indicating the payment method CC - Credit Card EP - External Payment",
+        "enum": [
+          "CC",
+          "EP"
+        ],
+        "type": "string"
+      },
+      "fraudRisk": {
+        "description": "Status codes for describing the result of the fraud check of transactions. For the description of each status code, please refer to the Partner Adapter Development Guideline.",
+        "example": "SEVERE",
+        "enum": [
+          "NONE",
+          "ELEVATED",
+          "SEVERE",
+          "NOT_DETERMINED",
+          "ERRONEOUS",
+          "CHECK_INACTIVE",
+          "ACCEPTED",
+          "REJECTED"
+        ],
+        "type": "string"
+      },
+      "charge": {
+        "type": "object",
+        "properties": {
+          "PaymentByPaymentServicePrvdr": {
+            "description": "Unique identifier provided by a payment service provider to represent a payment/charge",
+            "example": "paym_4711",
+            "type": "string"
+          },
+          "PaymentByDigitalPaymentService": {
+            "maxLength": 44,
+            "description": "Unique identifier provided by SAP digital payments add-on for a payment. Equals to DigitalPaymentTransaction",
+            "example": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+            "type": "string"
+          },
+          "AmountInPaymentCurrency": {
+            "pattern": "^(0|[1-9]\\d*)(\\.\\d{0,6})?$",
+            "description": "Paid/Charged amount - following pattern is used for validation: ^(0|[1-9]\\d*)(\\.\\d{0,6})?$",
+            "example": "123.45",
+            "type": "string"
+          },
+          "PaymentCurrency": {
+            "description": "Currency code (using ISO 4217) of the paid/charged amount",
+            "example": "EUR",
+            "type": "string"
+          },
+          "PaymentDateTime": {
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) when the payment/charge was processed at the payment service provider",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "DetailedPaymentStatus": {
+            "description": "Detailed status code values: <br> 100 - Successful <br> 110 - Pending <br> 201 - Limit exceeded <br> 202 - Temporary processing error <br> 210 - Card data invalid <br> 211 - Card expired <br> 212 - Card declined <br> 213 - Fraudulent transaction <br> 220 - Data validation error <br> 221 - Missing authorization <br> 222 - Transaction declined <br> 299 - Processing error <br> 400 - Authorization expired",
+            "example": "100",
+            "type": "string"
+          },
+          "PaymentStatusName": {
+            "description": "Status code value name or human readable error description if DetailedPaymentStatus is not 100",
+            "example": "Successful",
+            "type": "string"
+          },
+          "MerchantAlias": {
+            "maxLength": 15,
+            "description": "Merchant Alias Identifier - only provided for reporting purposes",
+            "example": "SHOPEUR",
+            "type": "string"
+          }
+        },
+        "required": [
+          "PaymentByDigitalPaymentService"
+        ]
+      },
+      "source": {
+        "description": "Payment medium used for the authorization or charge (Payment Card, PayPal Account, Procurement Card, etc.",
+        "type": "object",
+        "properties": {
+          "Card": {
+            "$ref": "#/components/schemas/paymentCard"
+          },
+          "Merchant": {
+            "$ref": "#/components/schemas/merchant"
+          }
+        }
+      },
+      "initiatePaymentPageRequest": {
+        "description": "The property ShippingAddress is optional if no physical shipment of goods takes place or if the value of ShippingAddrSameAsBillingAddr is true. It is implicitly assumed that the DigitalPaymentAuthorizationInitiatedByRole is set to CARDHOLDER, i.e. the cardholder is requesting to initiate the payment on the payment page. Only initial recurring payments can be requested using this endpoint; subsequent recurring payments can only be created using (other) authorization/charge endpoints.",
+        "type": "object",
+        "properties": {
+          "PaymentCard": {
+            "$ref": "#/components/schemas/paymentCard"
+          },
+          "Customer": {
+            "$ref": "#/components/schemas/customer"
+          },
+          "CustomerAccountNumber": {
+            "maxLength": 10,
+            "description": "[DEPRECATED. Use Customer.CustomerAccountNumber instead.] Identifier of the customer at the merchant",
+            "example": "112AN45",
+            "type": "string"
+          },
+          "MerchantOrderId": {
+            "maxLength": 30,
+            "description": "Identifier of the order at the merchant",
+            "example": "5468785",
+            "type": "string"
+          },
+          "PurchaseAmount": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Total amount of the transaction for which the payment is requested not necessarily the AmountInTransactionCurrency. In the case of payment card authorization it is equal to the PurchaseAmount as defined by EMV 3-D Secure Protocol including but not limited to the gross amount of the shopping cart",
+            "example": "123.45",
+            "type": "string"
+          },
+          "PurchaseCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the purchase; mandatory if PurchaseAmount is provided",
+            "example": "EUR",
+            "type": "string"
+          },
+          "PurchaseDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Purchase creation timestamp (UTC)",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "AmountInTransactionCurrency": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Amount to be authorized/paid",
+            "example": "140.75",
+            "type": "string"
+          },
+          "TransactionCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the amount that should be authorized/paid",
+            "example": "USD",
+            "type": "string"
+          },
+          "ReferenceDocument": {
+            "maxLength": 50,
+            "description": "Identifier supplied by the consumer to represent the referenced document",
+            "example": "4865448632",
+            "type": "string"
+          },
+          "PaymentCardAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Obsolete - use DgtlPaytAuthznRelationID instead",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "DgtlPaytAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier of a previous successful authorization to represent a link to current authorization request. Must be empty, if the authorization to be initiated is not associated to any other previous authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "ShippingAddrSameAsBillingAddr": {
+            "description": "Abbreviation for ShippingAddressSameAsBillingAddress",
+            "example": false,
+            "type": "boolean"
+          },
+          "BillingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "ShippingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "DigitalPaymentRelationType": {
+            "$ref": "#/components/schemas/digitalPaymentRelationType"
+          },
+          "DigitalPaymentCommerceType": {
+            "$ref": "#/components/schemas/digitalPaymentCommerceType"
+          },
+          "DigitalPaymentSessionType": {
+            "$ref": "#/components/schemas/digitalPaymentSessionType"
+          },
+          "DgtlPaytAuthznScenarioType": {
+            "$ref": "#/components/schemas/digitalPaymentAuthorizationScenarioType"
+          },
+          "MemoLine": {
+            "maxLength": 255,
+            "description": "Free form field, that contains a note to the payer. Depending on the supported length at the payment service provider, the content of this field can be truncated.",
+            "example": "Thank you for your purchase.",
+            "type": "string"
+          },
+          "PaymentTransactionDescription": {
+            "maxLength": 22,
+            "description": "If supported by the payment service provider, a text that will be displayed in capital letters on the customer's credit card statement. If the payment service provider does not support such a custom description, this text may be ignored.",
+            "example": "COMPANY CODE",
+            "type": "string"
+          },
+          "CustomParameterValue": {
+            "maxLength": 255,
+            "description": "Routing parameter to determine PSP Merchant ID for merchant independent cards - CustomParameterValue",
+            "type": "string"
+          },
+          "CompanyCode": {
+            "maxLength": 40,
+            "description": "Routing parameter to determine PSP Merchant ID for merchant independent cards - Company",
+            "example": "1010",
+            "type": "string"
+          },
+          "CustomerCountry": {
+            "maxLength": 3,
+            "description": "Routing parameter to determine PSP Merchant ID for merchant independent cards - Country of Customer",
+            "example": "DE",
+            "type": "string"
+          },
+          "DgtlPaytSenderLogicalSystem": {
+            "maxLength": 20,
+            "description": "Routing parameter to determine PSP and associated merchant ID using the unique identifier of the system sending the request to the SAP digital payments add-on",
+            "example": "0030390170AB3CLNT700",
+            "type": "string"
+          }
+        },
+        "required": [
+          "AmountInTransactionCurrency",
+          "TransactionCurrency",
+          "DigitalPaymentCommerceType",
+          "DigitalPaymentSessionType"
+        ]
+      },
+      "initiatePaymentPageResponse": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "description": "Unique identifier provided by SAP to represent a transaction processed in SAP digital payments add-on",
+            "example": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+            "type": "string"
+          }
+        }
+      },
+      "finalizePaymentPageRequest": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "maxLength": 44,
+            "description": "Unique identifier provided by SAP to represent a transaction processed in SAP digital payments add-on.",
+            "example": "15d73bda6fb690bb405cd8a4410acd55de92d266a31",
+            "type": "string"
+          },
+          "TransactionByPaytSrvcPrvdr": {
+            "minLength": 1,
+            "maxLength": 44,
+            "description": "Unique identifier of the transaction provided by the adapter of the payment service provider to retrieve the transaction details.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction"
+        ]
+      },
+      "finalizePaymentPageResponse": {
+        "type": "object",
+        "properties": {
+          "DgtlPaytPaymentPageTransType": {
+            "description": "The payment created in the checkout process is either authorized or already charged. If the transaction type is 'AUTHORIZATION', then 'Authorization' is mandatory, if it is 'CHARGE', then 'Charge' is mandatory.",
+            "enum": [
+              "AUTHORIZATION",
+              "CHARGE"
+            ],
+            "type": "string"
+          },
+          "Authorization": {
+            "$ref": "#/components/schemas/authorization"
+          },
+          "Charge": {
+            "$ref": "#/components/schemas/charge"
+          },
+          "Source": {
+            "$ref": "#/components/schemas/source"
+          },
+          "PaymentType": {
+            "$ref": "#/components/schemas/paymentPagePaymentType"
+          },
+          "PaytCardRegnLifeCycleType": {
+            "$ref": "#/components/schemas/paytCardRegnLifeCycleType"
+          },
+          "ElectronicPaymentType": {
+            "minLength": 4,
+            "maxLength": 4,
+            "description": "An identifier indicating the type of electronic payment performed on the payment page",
+            "type": "string"
+          },
+          "DgtlPaytAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier representing a link to most recent authorization. May also be provided in case the DgtlPaytPaymentPageTransType is set to charge, for example due to an initiation of a recurring payment",
+            "type": "string"
+          }
+        },
+        "required": [
+          "DgtlPaytPaymentPageTransType"
+        ]
+      },
+      "paymentPagePaymentType": {
+        "description": "An identifier indicating the type of payment performed on the payment page",
+        "example": "PP",
+        "enum": [
+          "CC",
+          "PP",
+          "KL",
+          "AP",
+          "SO",
+          "ID",
+          "PC",
+          "G1",
+          "GP",
+          "A1",
+          "AC",
+          "MP",
+          "WP",
+          "A2",
+          "PR",
+          "ES",
+          "P1",
+          "P2",
+          "BA",
+          "VI",
+          "WC"
+        ],
+        "type": "string"
+      },
+      "paytCardRegnLifeCycleType": {
+        "description": "Defines the type of the lifetime of a registration for a payment card. Only will be available in the context of a payment card payment. Values are: '01' (default): The card may be used for multiple transactions. The caller is responsible for the lifecycle and has to delete the card after all transactions have been completed. '02': The card may be deleted by the service as soon as the respective transaction performed with that card is completed. The caller is not requested to issue deletion of that card.",
+        "enum": [
+          "01",
+          "02"
+        ],
+        "type": "string"
+      },
+      "payByLinkCreatePaymentRequests": {
+        "type": "object",
+        "properties": {
+          "PayByLinkPaymentRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/payByLinkCreatePaymentRequest"
+            }
+          }
+        },
+        "required": [
+          "PayByLinkPaymentRequests"
+        ]
+      },
+      "payByLinkCreatePaymentRequest": {
+        "type": "object",
+        "properties": {
+          "PaymentRequestBatchItem": {
+            "minimum": 0,
+            "maximum": 9999,
+            "description": "Identifier of the item inside the bulk request. Must be unique within a request.",
+            "type": "integer"
+          },
+          "CustomerAccountNumber": {
+            "maxLength": 10,
+            "description": "Identifier of the customer at the merchant",
+            "example": "112AN45",
+            "type": "string"
+          },
+          "MerchantOrderId": {
+            "maxLength": 30,
+            "description": "Identifier of the order at the merchant",
+            "example": "5468785",
+            "type": "string"
+          },
+          "PurchaseAmount": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Total amount of the transaction for which the payment is requested not necessarily the AmountInPaymentCurrency. In the case of payment card authorization it is equal to the PurchaseAmount as defined by EMV 3-D Secure Protocol including but not limited to the gross amount of the shopping cart",
+            "example": "123.45",
+            "type": "string"
+          },
+          "PurchaseCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the purchase; mandatory if PurchaseAmount is provided",
+            "example": "EUR",
+            "type": "string"
+          },
+          "PurchaseDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Purchase creation timestamp (UTC)",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "AmountInTransactionCurrency": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Amount to be authorized/paid",
+            "example": "140.75",
+            "type": "string"
+          },
+          "TransactionCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the amount that should be authorized/paid",
+            "example": "USD",
+            "type": "string"
+          },
+          "ReferenceDocument": {
+            "maxLength": 50,
+            "description": "Identifier supplied by the consumer to represent the referenced document",
+            "example": "4865448632",
+            "type": "string"
+          },
+          "PaymentCardAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier of a previous successful authorization to represent a link to current request if it is an authorization. Must be empty, if the authorization to be initiated is not associated to any other previous authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "ShippingAddrSameAsBillingAddr": {
+            "description": "Indicator specifying whether shipping address is same as billing address",
+            "example": false,
+            "type": "boolean"
+          },
+          "BillingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "ShippingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "DigitalPaymentRelationType": {
+            "$ref": "#/components/schemas/digitalPaymentRelationType"
+          },
+          "MemoLine": {
+            "maxLength": 255,
+            "description": "Text that contains a note to the payer. It is transferred to the payment service provider (if supported).  Depending on the supported length at the payment service provider, the content of this field can be truncated.",
+            "example": "Thank you for your purchase.",
+            "type": "string"
+          },
+          "PaymentTransactionDescription": {
+            "maxLength": 22,
+            "description": "Text that will be displayed in capital letters on the customer's credit card statement.  It is transferred to the payment service provider (if supported). If the payment service provider does not support such a custom description, this text may be ignored.",
+            "example": "COMPANY CODE",
+            "type": "string"
+          },
+          "PaymentRequestConfiguration": {
+            "maxLength": 32,
+            "description": "Configuration of payment by link page, which will be displayed to the payer",
+            "example": "config1",
+            "type": "string"
+          },
+          "ValidToDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) until the payment request shall be valid. Must be in the future. Maximum validity is 6 months in the future.",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "PayerPaymentRequestNote": {
+            "maxLength": 1000,
+            "description": "Text to be shown to the payer during on the SAP Digital Payments Payment By Link checkout page only. It is not transferred to the payment service provider.",
+            "example": "Pay your invoice 2837487893 of 300 USD",
+            "type": "string"
+          }
+        },
+        "required": [
+          "PaymentRequestBatchItem",
+          "AmountInTransactionCurrency",
+          "TransactionCurrency",
+          "ReferenceDocument",
+          "PaymentRequestConfiguration",
+          "ValidToDateTime",
+          "PayerPaymentRequestNote"
+        ]
+      },
+      "payByLinkCreatePaymentResponses": {
+        "type": "object",
+        "properties": {
+          "PayByLinkPaymentResponses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/payByLinkCreatePaymentResponse"
+            }
+          }
+        },
+        "required": [
+          "PayByLinkPaymentResponses"
+        ]
+      },
+      "payByLinkCreatePaymentResponse": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "$ref": "#/components/schemas/digitalPaymentTransaction"
+          },
+          "PaymentRequestBatchItem": {
+            "minimum": 0,
+            "maximum": 9999,
+            "description": "Identifier of the item inside the bulk request",
+            "type": "integer"
+          },
+          "ReferencedPaymentRequest": {
+            "$ref": "#/components/schemas/payByLinkPaymentRequest"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction",
+          "PaymentRequestBatchItem"
+        ]
+      },
+      "paymentRequestStatus": {
+        "description": "Status of a payment request.",
+        "example": "OPEN",
+        "enum": [
+          "OPEN",
+          "INPROGRESS",
+          "EXECUTED",
+          "EXPIRED",
+          "CANCELLED",
+          "ERROR"
+        ],
+        "type": "string"
+      },
+      "paymentRequestPaymentDetails": {
+        "type": "object",
+        "properties": {
+          "Source": {
+            "$ref": "#/components/schemas/source"
+          },
+          "Charge": {
+            "$ref": "#/components/schemas/charge"
+          },
+          "PaymentType": {
+            "$ref": "#/components/schemas/paymentPagePaymentType"
+          }
+        }
+      },
+      "paymentAttempt": {
+        "type": "object",
+        "properties": {
+          "PaymentRequestPaymentAttempt": {
+            "maxLength": 44,
+            "description": "Identifier of a Payment Attempt",
+            "type": "string"
+          },
+          "DigitalPaymentPaymentStatus": {
+            "$ref": "#/components/schemas/processingStatus"
+          },
+          "DigitalPaytPaytAttemptStatus": {
+            "$ref": "#/components/schemas/paymentAttemptStatus"
+          },
+          "PaymentAttemptCreationDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp when the attempt was initiated",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "PaytAttemptLastChangeDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp when the attempt was last changed",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          }
+        },
+        "required": [
+          "PaymentRequestPaymentAttempt",
+          "DigitalPaytPaytAttemptStatus",
+          "PaymentAttemptCreationDateTime",
+          "PaytAttemptLastChangeDateTime"
+        ]
+      },
+      "payByLinkGetRequests": {
+        "type": "object",
+        "properties": {
+          "PayByLinkPaymentRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/payByLinkGetRequest"
+            }
+          }
+        },
+        "required": [
+          "PayByLinkPaymentRequests"
+        ]
+      },
+      "payByLinkGetRequest": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentPaymentRequest": {
+            "minLength": 26,
+            "maxLength": 40,
+            "description": "Identifier of a Payment Request",
+            "type": "string"
+          }
+        },
+        "required": [
+          "DigitalPaymentPaymentRequest"
+        ]
+      },
+      "payByLinkCancelResponses": {
+        "type": "object",
+        "properties": {
+          "PayByLinkCancelResponses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/payByLinkCancelResponse"
+            }
+          }
+        },
+        "required": [
+          "PayByLinkCancelResponses"
+        ]
+      },
+      "payByLinkCancelResponse": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "$ref": "#/components/schemas/digitalPaymentTransaction"
+          },
+          "ReferencedPaymentRequest": {
+            "$ref": "#/components/schemas/payByLinkPaymentRequest"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction"
+        ]
+      },
+      "payByLinkPaymentResponses": {
+        "type": "object",
+        "properties": {
+          "PayByLinkPaymentResponses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/payByLinkPaymentResponse"
+            }
+          }
+        },
+        "required": [
+          "PayByLinkPaymentResponses"
+        ]
+      },
+      "payByLinkPaymentResponse": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "$ref": "#/components/schemas/digitalPaymentTransaction"
+          },
+          "ReferencedPaymentRequest": {
+            "$ref": "#/components/schemas/payByLinkPaymentRequest"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction"
+        ]
+      },
+      "payByLinkPaymentRequest": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentPaymentRequest": {
+            "maxLength": 40,
+            "description": "Identifier of a Payment Request",
+            "example": "93280934890328483724",
+            "type": "string"
+          },
+          "PaymentRequestCheckoutURL": {
+            "maxLength": 5000,
+            "description": "URL to the PaymentByLink page to pay this payment request",
+            "type": "string"
+          },
+          "PaytRequestVerificationToken": {
+            "maxLength": 16,
+            "description": "Verification code for the payment request",
+            "type": "string"
+          },
+          "DigitalPaytPaymentReqStatus": {
+            "$ref": "#/components/schemas/paymentRequestStatus"
+          },
+          "PaymentDetails": {
+            "$ref": "#/components/schemas/paymentRequestPaymentDetails"
+          },
+          "CustomerAccountNumber": {
+            "maxLength": 10,
+            "description": "Identifier of the customer at the merchant",
+            "example": "112AN45",
+            "type": "string"
+          },
+          "MerchantOrderId": {
+            "maxLength": 30,
+            "description": "Identifier of the order at the merchant",
+            "example": "5468785",
+            "type": "string"
+          },
+          "PurchaseAmount": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Total amount of the transaction for which the payment is requested not necessarily the AmountInPaymentCurrency. In the case of payment card authorization it is equal to the PurchaseAmount as defined by EMV 3-D Secure Protocol including but not limited to the gross amount of the shopping cart",
+            "example": "123.45",
+            "type": "string"
+          },
+          "PurchaseCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the purchase; mandatory if PurchaseAmount is provided",
+            "example": "EUR",
+            "type": "string"
+          },
+          "PurchaseDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Purchase creation timestamp (UTC)",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "AmountInTransactionCurrency": {
+            "pattern": "^(0|[1-9]\\d{0,36})(\\.\\d{0,6})?$",
+            "description": "Amount to be authorized/paid",
+            "example": "140.75",
+            "type": "string"
+          },
+          "TransactionCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "description": "Currency code (using ISO 4217) of the amount that should be authorized/paid",
+            "example": "USD",
+            "type": "string"
+          },
+          "ReferenceDocument": {
+            "maxLength": 50,
+            "description": "Identifier supplied by the consumer to represent the referenced document",
+            "example": "4865448632",
+            "type": "string"
+          },
+          "PaymentCardAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier of a previous successful authorization to represent a link to current request if it is an authorization. Must be empty, if the authorization to be initiated is not associated to any other previous authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "ShippingAddrSameAsBillingAddr": {
+            "description": "Indicator specifying whether shipping address is same as billing address",
+            "example": false,
+            "type": "boolean"
+          },
+          "BillingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "ShippingAddress": {
+            "$ref": "#/components/schemas/paymentAuthorizationAddress"
+          },
+          "DigitalPaymentRelationType": {
+            "$ref": "#/components/schemas/digitalPaymentRelationType"
+          },
+          "MemoLine": {
+            "maxLength": 255,
+            "description": "Text that contains a note to the payer. It is transferred to the payment service provider (if supported).  Depending on the supported length at the payment service provider, the content of this field can be truncated.",
+            "example": "Thank you for your purchase.",
+            "type": "string"
+          },
+          "PaymentTransactionDescription": {
+            "maxLength": 22,
+            "description": "Text that will be displayed in capital letters on the customer's credit card statement.  It is transferred to the payment service provider (if supported). If the payment service provider does not support such a custom description, this text may be ignored.",
+            "example": "COMPANY CODE",
+            "type": "string"
+          },
+          "PaymentRequestConfiguration": {
+            "maxLength": 10,
+            "description": "Configuration of payment by link, which will be displayed to the payer",
+            "example": "config1",
+            "type": "string"
+          },
+          "ValidToDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) until the payment request shall be valid. Must be in the future. Maximum validity is 6 months in the future.",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "PayerPaymentRequestNote": {
+            "maxLength": 1000,
+            "description": "Text to be shown to the payer during on the SAP Digital Payments Payment By Link checkout page only. It is not transferred to the payment service provider.",
+            "example": "Pay your invoice 2837487893 of 300 USD",
+            "type": "string"
+          },
+          "PaymentRequestCreationDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp when the request was created",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "PaymentReqLastChangeDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp when the request was last changed",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "PaymentAttempts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/paymentAttempt"
+            }
+          }
+        },
+        "required": [
+          "DigitalPaymentPaymentRequest",
+          "PaymentRequestCheckoutURL",
+          "PaytRequestVerificationToken",
+          "DigitalPaytPaymentReqStatus",
+          "AmountInTransactionCurrency",
+          "TransactionCurrency",
+          "ReferenceDocument",
+          "PaymentRequestConfiguration",
+          "ValidToDateTime",
+          "PayerPaymentRequestNote",
+          "PaymentRequestCreationDateTime",
+          "PaymentReqLastChangeDateTime"
+        ]
+      },
+      "paymentAttemptStatus": {
+        "description": "Status of a payment attempt.",
+        "example": "INITIAL",
+        "enum": [
+          "INITIAL",
+          "SUCCESS",
+          "PAYMENT_ERROR",
+          "TIMEOUT",
+          "CANCEL",
+          "FATAL_ERROR",
+          "DISPLAY",
+          "REJECTED",
+          "LOCKED"
+        ],
+        "type": "string"
+      },
+      "payByLinkAdjustValidityRequests": {
+        "type": "object",
+        "properties": {
+          "PayByLinkPaymentRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/payByLinkAdjustValidityRequest"
+            }
+          }
+        },
+        "required": [
+          "PayByLinkPaymentRequests"
+        ]
+      },
+      "payByLinkAdjustValidityRequest": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentPaymentRequest": {
+            "minLength": 26,
+            "maxLength": 40,
+            "description": "Identifier of a Payment Request",
+            "type": "string"
+          },
+          "ValidToDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) until the payment request shall be valid. Must be in the future. Maximum validity is 6 months in the future.",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          }
+        },
+        "required": [
+          "DigitalPaymentPaymentRequest",
+          "ValidToDateTime"
+        ]
+      },
+      "payByLinkAdjustValidityResponses": {
+        "type": "object",
+        "properties": {
+          "AdjustValidityResponses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/payByLinkAdjustValidityResponse"
+            }
+          }
+        },
+        "required": [
+          "AdjustValidityResponses"
+        ]
+      },
+      "payByLinkAdjustValidityResponse": {
+        "type": "object",
+        "properties": {
+          "DigitalPaymentTransaction": {
+            "$ref": "#/components/schemas/digitalPaymentTransaction"
+          },
+          "ReferencedPaymentRequest": {
+            "$ref": "#/components/schemas/payByLinkPaymentRequest"
+          }
+        },
+        "required": [
+          "DigitalPaymentTransaction"
+        ]
+      },
+      "getAuthorizationByDPTrnxResponse": {
+        "type": "object",
+        "properties": {
+          "AuthorizationByPaytSrvcPrvdr": {
+            "maxLength": 30,
+            "description": "Unique identifier provided by a payment service provider to represent an authorization",
+            "example": "auth_4711",
+            "type": "string"
+          },
+          "AuthorizationByAcquirer": {
+            "maxLength": 30,
+            "description": "Unique identifier provided by an acquirer to represent an authorization. Can be empty, if payment service provider does not use an acquirer.",
+            "example": "acqu_4711",
+            "type": "string"
+          },
+          "AuthorizationByDigitalPaytSrvc": {
+            "maxLength": 10,
+            "description": "Unique identifier provided by SAP digital payments add-on. Can be used as an alternative to the identification provided by the payment service provider if the connected system cannot process long authorization identifiers.",
+            "example": "ILZSGWLACY",
+            "type": "string"
+          },
+          "PaymentCardAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Obsolete - use DgtlPaytAuthznRelationID instead",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          },
+          "AuthorizedAmountInAuthznCrcy": {
+            "maxLength": 40,
+            "pattern": "^(0|[1-9]\\d*)(\\.\\d{0,6})?$",
+            "description": "Authorized amount",
+            "example": "123.45",
+            "type": "string"
+          },
+          "AuthorizationCurrency": {
+            "minLength": 3,
+            "maxLength": 3,
+            "pattern": "^[A-Za-z]{3}$",
+            "description": "Currency code (using ISO 4217) of the authorized amount",
+            "example": "EUR",
+            "type": "string"
+          },
+          "AuthorizationDateTime": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) when the authorization was processed at the payment service provider",
+            "example": "2018-06-19T14:20:52Z",
+            "type": "string"
+          },
+          "AuthorizationExpirationDateTme": {
+            "minLength": 20,
+            "maxLength": 24,
+            "pattern": "\\d{4}-[01]\\d-[0-3]\\dT[0-2]\\d:[0-5]\\d:[0-5]\\d(?:\\.\\d+)?Z",
+            "description": "Timestamp (UTC) when the authorization will expire at the payment service provider. Can be empty, if payment service provider does not support this functionality.",
+            "example": "2018-06-23T14:20:52Z",
+            "type": "string"
+          },
+          "DetailedAuthorizationStatus": {
+            "$ref": "#/components/schemas/processingStatus"
+          },
+          "DigitalPaymentFraudRisk": {
+            "$ref": "#/components/schemas/fraudRisk"
+          },
+          "StatusDescription": {
+            "maxLength": 255,
+            "description": "Status code value name or human readable error description if DetailedAuthorizationStatus is not 100",
+            "example": "The processing was completed successfully.",
+            "type": "string"
+          },
+          "MerchantAlias": {
+            "maxLength": 15,
+            "description": "Merchant Alias Identifier.",
+            "example": "SHOPEUR",
+            "type": "string"
+          },
+          "MerchantAccount": {
+            "maxLength": 256,
+            "description": "Payment service provider merchant (account) identifier",
+            "example": "SHOP_USD or SALES_NORTH or 12345@psp_name.com",
+            "type": "string"
+          },
+          "PaymentServiceProvider": {
+            "description": "Four digit payment service provider code with which transaction was done",
+            "example": "DPXX",
+            "type": "string"
+          },
+          "DgtlPaytAuthznRelationID": {
+            "maxLength": 44,
+            "description": "Unique identifier of a previous successful authorization to represent a link to current authorization request. Must be empty, if the authorization to be initiated is not associated to any other previous authorization.",
+            "example": "ASD64536WE36483623235864",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {},
+    "parameters": {},
+    "examples": {},
+    "requestBodies": {},
+    "headers": {},
+    "securitySchemes": {},
+    "links": {},
+    "callbacks": {}
+  }
+}

@@ -1,0 +1,23 @@
+= Swagger UI with SAP DP API Doc
+
+== Role
+Provide an easy way to view SAP API documentation.
+
+== Run
+
+Requires node > 14(?)
+[,bash]
+```sh
+nvm use v16.13.1
+```
+
+Start:
+```sh
+node index.js
+```
+
+Node will run at the port configured in index.js, default ist 6070.
+
+== Endpoints
+
+* Call / to get an overview about available docs

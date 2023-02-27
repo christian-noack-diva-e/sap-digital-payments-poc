@@ -1,0 +1,48 @@
+# frontend
+
+Frontend to test the SAP Digital Payments DPJSLIB integration.
+
+## Recommended IDE Setup
+
+link:https://code.visualstudio.com/)[VSCode] + https://marketplace.visualstudio.com/items?itemName=Vue.volar[Volar](and disable Vetur) + link:https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)[TypeScript Vue Plugin (Volar)].
+
+## Customize configuration
+
+See link:https://vitejs.dev/config/[Vite Configuration Reference].
+
+## Project Setup
+
+Requires node > 14(?)
+[,bash]
+```sh
+nvm use v16.13.1
+npm install
+```
+
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
+```
+
+### Compile and Minify for Production
+
+```sh
+npm run build
+```
+
+## Example Log Output
+
+[,json]
+----
+INFO [Fri, 24 Mar 2023 11:24:06 GMT] Getting DPJSLIB Config
+INFO [Fri, 24 Mar 2023 11:24:07 GMT] DPJSLIB Config retrieved: {"LoaderUrl":"https://digitalpayments-demo-core.cfapps.eu10.hana.ondemand.com/dpjslib/latest/loader.min.js","APISessionId":"AaHA..."}
+INFO [Fri, 24 Mar 2023 11:24:07 GMT] DPJSLIB loaded
+digitalpayments-demo-core.cfapps.eu10.hana.ondemand.com/dpjslib/latest/i18n/i18n_en_US.properties:1          Failed to load resource: the server responded with a status of 404 ()
+INFO [Fri, 24 Mar 2023 11:24:07 GMT] DPJSLIB init success Api$$module$dpjslib$latest$modules$dpjslib_api
+INFO [Fri, 24 Mar 2023 11:24:07 GMT] Initialize Payment in Backend
+INFO [Fri, 24 Mar 2023 11:24:08 GMT] Loading Payment Page Config
+INFO [Fri, 24 Mar 2023 11:24:08 GMT] Auto selecting first payment method & waiting for user interaction.
+INFO [Fri, 24 Mar 2023 11:24:20 GMT] Payment Successful, dp transaction id: pi_3Mp...
+INFO [Fri, 24 Mar 2023 11:24:22 GMT] Payment Details transferred to Backend.
+----

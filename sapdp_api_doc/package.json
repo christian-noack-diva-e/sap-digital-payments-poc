@@ -1,0 +1,15 @@
+{
+  "name": "sapdp_api_doc",
+  "version": "1.0.0",
+  "description": "Node Server to host SwaggerUI for SAP DP API doc",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christian Noack <christian.noack@diva-e.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@ptkdev/logger": "^1.8.0",
+    "swagger-ui-express": "^4.6.2"
+  }
+}
