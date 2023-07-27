@@ -30,8 +30,10 @@ var oAuthToken = "";
 var digitalPaymentTransaction = "";
 
 async function authorize() {
+    const url = authUrl + "/oauth/token"
+    logger.info("POST " + url)
     await axios
-        .post(authUrl, null, {
+        .post(url, null, {
             auth: {
                 username: credentials.get("client.id"),
                 password: credentials.get("client.secret")
@@ -57,8 +59,10 @@ function getAuth() {
 async function getDPJSLIBConfig() {
     const config = getAuth();
 
+    const url = apiRoot + "/v1/dpjslib/loader"
+    logger.info("GET " + url)
     return axios
-        .get(apiRoot + "/v1/dpjslib/loader", config)
+        .get(url, config)
         .then((response) => {
             logger.info(util.inspect(response.data), "getDPJSLIB Result")
             return response.data
@@ -68,14 +72,17 @@ async function getDPJSLIBConfig() {
 async function initializePayment() {
     const config = getAuth();
     const requestBody = {
-        "AmountInTransactionCurrency": 140.75,
-        "TransactionCurrency": "USD",
+        "AmountInTransactionCurrency": 180.00,
+        "TransactionCurrency": "EUR",
         "DigitalPaymentCommerceType": "ECOMMERCE",
         "DigitalPaymentSessionType": "ONLINE"
     }
 
+    const url = apiRoot + "/v2/paymentpage/initiate"
+    logger.info("POST " + url)
+
     return axios
-        .post(apiRoot + "/v2/paymentpage/initiate", requestBody, config)
+        .post(url, requestBody, config)
         .then((response) => {
             // TODO validate response
             logger.info(util.inspect(response.data), "Payment Initiate Result")
@@ -101,7 +108,9 @@ async function finalizePayment(transactionByPaytSrvcPrvdr) {
 
     logger.info(util.inspect(requestBody), "Finalizing Payment with")
 
-    return axios.post(apiRoot + "/v2/paymentpage/finalize", requestBody, config)
+    const url = apiRoot + "/v2/paymentpage/finalize"
+    logger.info("POST " + url)
+    return axios.post(url, requestBody, config)
         .then((response) => logger.info("Payment Finalize Successful: " + util.inspect(response.data)))
 }
 

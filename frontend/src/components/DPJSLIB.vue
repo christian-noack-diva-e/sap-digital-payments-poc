@@ -11,7 +11,8 @@ const backendBaseUrl = "http://localhost:6060"
 // const backendBaseUrl = "http://10.0.2.2:6060"
 
 // This is the name of the payment configuration, given on create at https://<namespace>.demo-digitalpayments-sap.cfapps.eu10.hana.ondemand.com/paymentPageConfiguration
-const paymentPageConfigurationId = "stripetestnospaces";
+// const paymentPageConfigurationId = "stripetestnospaces";
+const paymentPageConfigurationId = "magniustest";
 const buttonsContainerDivId = "dpButtonContainer";
 
 async function getDPJSLIBConfig() {
