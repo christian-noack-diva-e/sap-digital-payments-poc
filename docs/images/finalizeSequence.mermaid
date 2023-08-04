@@ -1,0 +1,30 @@
+sequenceDiagram
+autonumber
+
+actor User
+participant Browser
+participant Shop Frontend
+participant DPJSLIB
+participant Shop Backend
+participant SAP DPA
+participant Payment Service Provider
+
+
+User ->> Browser: Click pay button
+Browser ->> DPJSLIB: forward
+DPJSLIB ->> SAP DPA: Communicate Users choice
+SAP DPA -->> DPJSLIB: Return card details url
+DPJSLIB -->> Browser: Open card details url in new window
+
+User ->> Browser: Fill in payment details \n and click "Pay" on payment window
+Browser ->> Payment Service Provider: send payment details
+Payment Service Provider ->> Payment Service Provider: verify payment details
+Payment Service Provider ->> Payment Service Provider: authorize payment
+Payment Service Provider ->> DPJSLIB: return authorisation result
+DPJSLIB ->> Browser: Close payment window. Render error message in error case, or nothing on success
+DPJSLIB -->> Shop Frontend: return result
+Shop Frontend -->> Browser: render success or error case
+Shop Frontend ->> Shop Backend: send payment result (TransactionByOaytSrvcPrvdr)
+Shop Backend ->> SAP DPA: finalize payment
+SAP DPA -->> Shop Backend: return
+Shop Backend -->> Shop Frontend: return finalize result

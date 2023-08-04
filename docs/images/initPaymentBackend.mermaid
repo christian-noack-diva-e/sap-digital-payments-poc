@@ -1,0 +1,18 @@
+sequenceDiagram
+autonumber
+
+participant Shop Frontend
+participant DPJSLIB
+participant Shop Backend
+participant SAP DPA
+
+Shop Frontend ->> Shop Backend: Get DPJSLIB config
+Shop Backend ->> SAP DPA: authorize
+SAP DPA -->> Shop Backend: return
+Shop Backend ->> SAP DPA: Get DPJSLIB config
+SAP DPA -->> Shop Backend: return DPJSLIB config
+Shop Backend -->> Shop Frontend: return DPJSLIB config
+Shop Frontend ->> Shop Backend: get DigitalPaymentTransactionId
+Shop Backend ->> SAP DPA: init payment session with amount and currency
+SAP DPA -->> Shop Backend: return DigitalPaymentTransactionId
+Shop Backend -->> Shop Frontend: return PaymentTransactionId
